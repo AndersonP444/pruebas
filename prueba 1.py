@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import re
 import requests
-import openai
 import joblib
 import tensorflow as tf
 import secrets
@@ -14,6 +13,7 @@ import io
 import time
 import json
 import nltk
+from nltk.stem import PorterStemmer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from cryptography.fernet import Fernet
@@ -22,6 +22,7 @@ from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
 from tensorflow.keras.callbacks import EarlyStopping
 from nltk.stem import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
+from tensorflow.keras.optimizers import Adam
 
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
@@ -71,6 +72,7 @@ def typewriter_effect(text):
     return displayed_text
 
 # ========== CHATBOT ==========
+# Cargar intenciones
 with open('intents.json') as file:
     intents = json.load(file)
 
@@ -92,9 +94,11 @@ all_words = sorted(list(set(all_words)))
 encoder = LabelEncoder()
 y_train = encoder.fit_transform(tags)
 
+# Crear Bag of Words
 vectorizer = CountVectorizer(vocabulary=all_words)
 X_train = vectorizer.transform(patterns).toarray()
 
+# Cargar modelo de chatbot
 @st.cache_resource
 def cargar_modelo_chatbot():
     model = Sequential([
@@ -117,18 +121,23 @@ def cargar_modelo_chatbot():
 
 modelo_chatbot = cargar_modelo_chatbot()
 
+# Función de respuesta del chatbot
 def respuesta_chatbot(texto_usuario):
+    # Preprocesamiento
     palabras = nltk.word_tokenize(texto_usuario)
     palabras = [stemmer.stem(w.lower()) for w in palabras if w.isalnum()]
     
+    # Crear BoW
     bow = np.zeros(len(all_words))
     for palabra in palabras:
         if palabra in all_words:
             bow[all_words.index(palabra)] = 1
     
+    # Predecir
     prediccion = modelo_chatbot.predict(np.array([bow]), verbose=0)[0]
     tag = encoder.inverse_transform([np.argmax(prediccion)])[0]
     
+    # Obtener respuesta
     for intent in intents['intents']:
         if intent['tag'] == tag:
             return np.random.choice(intent['responses'])
