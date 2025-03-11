@@ -138,28 +138,46 @@ def cargar_modelo_chatbot():
 
 modelo_chatbot = cargar_modelo_chatbot()
 
+# ========== FUNCIÓN CORREGIDA DEL CHATBOT ==========
 # Función de respuesta del chatbot
 def respuesta_chatbot(texto_usuario):
-    # Preprocesamiento
-    palabras = nltk.word_tokenize(texto_usuario)
-    palabras = [stemmer.stem(w.lower()) for w in palabras if w.isalnum()]
+    try:
+        palabras = nltk.word_tokenize(texto_usuario)
+        palabras = [stemmer.stem(w.lower()) for w in palabras if w.isalnum()]
+        
+        bow = np.zeros(len(all_words))
+        for palabra in palabras:
+            if palabra in all_words:
+                bow[all_words.index(palabra)] = 1
+        
+        prediccion = modelo_chatbot.predict(np.array([bow]), verbose=0)[0]
+        tag = encoder.inverse_transform([np.argmax(prediccion)])[0]
+        
+        for intent in intents['intents']:
+            if intent['tag'] == tag:
+                return np.random.choice(intent['responses'])
+        
+        return "Lo siento, no entendí. ¿Podrías reformularlo?"
+    
+    except Exception as e:
+        return f"Error en el chatbot: {str(e)}"
     
     # Crear BoW
-    bow = np.zeros(len(all_words))
-    for palabra in palabras:
-        if palabra in all_words:
-            bow[all_words.index(palabra)] = 1
+    #bow = np.zeros(len(all_words))
+    #for palabra in palabras:
+    #    if palabra in all_words:
+    #        bow[all_words.index(palabra)] = 1
     
     # Predecir
-    prediccion = modelo_chatbot.predict(np.array([bow]), verbose=0)[0]
-    tag = encoder.inverse_transform([np.argmax(prediccion)])[0]
+    #prediccion = modelo_chatbot.predict(np.array([bow]), verbose=0)[0]
+    #tag = encoder.inverse_transform([np.argmax(prediccion)])[0]
     
     # Obtener respuesta
-    for intent in intents['intents']:
-        if intent['tag'] == tag:
-            return np.random.choice(intent['responses'])
+    #for intent in intents['intents']:
+    #    if intent['tag'] == tag:
+    #        return np.random.choice(intent['responses'])
     
-    return "Lo siento, no entendí. ¿Podrías reformularlo?"
+    #return "Lo siento, no entendí. ¿Podrías reformularlo?"
 
 # ========== FUNCIONES PRINCIPALES ==========
 def generar_contraseña_segura(longitud=16):
@@ -573,9 +591,9 @@ def main():
                         max_tokens=300
                     ).choices[0].message.content
                     
-                    with st.chat_message("assistant"):
-                        typewriter_effect(response)
-                    
+                    with st.chat_message("asistente"):
+                        response = respuesta_chatbot(prompt)  # <-- Usa solo esta línea
+                        st.markdown(response)
                     st.session_state.chat_history.append({"role": "assistant", "content": response})
                     st.rerun()
                     
