@@ -72,8 +72,8 @@ def typewriter_effect(text):
     return displayed_text
 
 # ========== CHATBOT ==========
-# Cargar intenciones
-with open('intents.json') as file:
+# Cargar intenciones # Cambia la ruta por la ubicación real de tu archivo
+with open('https://raw.githubusercontent.com/AndersonP444/pruebas/refs/heads/main/intents.json') as file:
     intents = json.load(file)
 
 # Preparar datos del chatbot
