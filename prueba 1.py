@@ -193,6 +193,9 @@ def generar_contraseña_segura(longitud=16):
     caracteres = string.ascii_letters + string.digits + "!@#$%^&*()"
     return ''.join(secrets.choice(caracteres) for _ in range(longitud))
 
+def generar_llave_acceso():  # Nombre en español
+    return secrets.token_urlsafe(32)
+
 def cargar_contraseñas_debiles(url):
     respuesta = requests.get(url)
     return set(linea.strip().lower() for linea in respuesta.text.splitlines() if linea.strip())
@@ -496,7 +499,7 @@ def main():
         with col2:
             st.markdown("### 🔑 Generar Llave de Acceso")
             if st.button("Generar Llave de Acceso"):
-                access_key = generate_access_key()
+                access_key = generar_llave_acceso()
                 st.success(f"**Llave de acceso generada:** `{access_key}`")
                 
                 buffer = descargar_contraseñas_txt([access_key])
