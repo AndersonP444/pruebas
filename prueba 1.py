@@ -73,8 +73,25 @@ def typewriter_effect(text):
 
 # ========== CHATBOT ==========
 # Cargar intenciones # Cambia la ruta por la ubicación real de tu archivo
-with open('https://raw.githubusercontent.com/AndersonP444/pruebas/main/intents.json') as file:
-    intents = json.load(file)
+# Intenta cargar localmente primero
+try:
+    with open('intents.json') as file:
+        intents = json.load(file)
+except FileNotFoundError:
+    # Si falla, descarga desde GitHub
+    try:
+        url = "https://raw.githubusercontent.com/AndersonP444/pruebas/main/intents.json"
+        response = requests.get(url)
+        response.raise_for_status()
+        intents = response.json()
+        
+        # Guarda localmente para próximas ejecuciones
+        with open('intents.json', 'w') as file:
+            json.dump(intents, file)
+            
+    except Exception as e:
+        st.error(f"Error crítico: {str(e)}")
+        intents = {"intents": []}  # Evita que la app se caiga
 
 # Preparar datos del chatbot
 patterns = []
