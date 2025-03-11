@@ -350,30 +350,25 @@ def obtener_contraseñas():
     return datos
 
 # ========== ESCANER DE VULNERABILIDADES ==========
-def explicar_vulnerabilidades(vulnerabilidades):
-    explicaciones = {
-        "XSS (Cross-Site Scripting)": [
-            "✅ **Qué es:** Ataque donde se inyectan scripts maliciosos en páginas web",
-            "🔒 **Solución:** Sanitizar entradas de usuario y usar Content Security Policy (CSP)"
-        ],
-        "SQL Injection": [
-            "✅ **Qué es:** Inyección de código SQL para manipular bases de datos",
-            "🔒 **Solución:** Usar consultas parametrizadas y ORMs"
-        ],
-        "CSRF (Cross-Site Request Forgery)": [
-            "✅ **Qué es:** Ataque que engaña al usuario para ejecutar acciones no deseadas",
-            "🔒 **Solución:** Implementar tokens CSRF y validar origen de las peticiones"
-        ]
-    }
-    
-    resultado = "## Explicación de Vulnerabilidades\n\n"
-    for vuln in vulnerabilidades:
-        if vuln in explicaciones:
-            resultado += f"### {vuln}\n" + "\n".join(explicaciones[vuln]) + "\n\n"
-        else:
-            resultado += f"### {vuln}\n⚠️ Información no disponible\n\n"
-    
-    return resultado
+def escanear_vulnerabilidades(url):
+    try:
+        response = requests.get(url)
+        content = response.text
+        
+        vulnerabilidades = []
+        
+        if re.search(r"<script>.*</script>", content, re.IGNORECASE):
+            vulnerabilidades.append("XSS (Cross-Site Scripting)")
+        
+        if re.search(r"select.*from|insert into|update.*set|delete from", content, re.IGNORECASE):
+            vulnerabilidades.append("SQL Injection")
+        
+        if not re.search(r"csrf_token", content, re.IGNORECASE):
+            vulnerabilidades.append("Posible CSRF (Cross-Site Request Forgery)")
+        
+        return vulnerabilidades
+    except Exception as e:
+        return [f"Error al escanear: {str(e)}"]
     
 # ========== FUNCIÓN PARA DESCARGAR CONTRASEÑAS EN TXT ==========
 def descargar_contraseñas_txt(contraseñas):
@@ -607,40 +602,22 @@ def main():
             st.rerun()
     
     with tab5:
-        st.subheader("🌐 Escáner Web")
-        url = st.text_input("Ingresa la URL del sitio web a escanear:")
+        st.subheader("🌐 Escáner de Vulnerabilidades Web")
         
+        url = st.text_input("Ingresa la URL del sitio web a escanear:")
         if url:
             with st.spinner("Escaneando..."):
-                try:
-                    response = requests.get(url)
-                    content = response.text
+                vulnerabilidades = escanear_vulnerabilidades(url)
+                if vulnerabilidades:
+                    st.error("⚠️ Vulnerabilidades encontradas:")
+                    for vuln in vulnerabilidades:
+                        st.write(f"- {vuln}")
                     
-                    vulnerabilidades = []
-                    
-                    # Detección de XSS
-                    if re.search(r"<script>.*</script>", content, re.IGNORECASE):
-                        vulnerabilidades.append("XSS (Cross-Site Scripting)")
-                    
-                    # Detección de SQL Injection
-                    if re.search(r"select.*from|insert into|update.*set|delete from", content, re.IGNORECASE):
-                        vulnerabilidades.append("SQL Injection")
-                    
-                    # Detección de CSRF
-                    if not re.search(r"csrf_token", content, re.IGNORECASE):
-                        vulnerabilidades.append("Posible CSRF (Cross-Site Request Forgery)")
-                    
-                    if vulnerabilidades:
-                        st.error("⚠️ Vulnerabilidades encontradas:")
-                        for vuln in vulnerabilidades:
-                            st.write(f"- {vuln}")
-                        
-                        st.markdown(explicar_vulnerabilidades(vulnerabilidades))
-                    else:
-                        st.success("✅ No se encontraron vulnerabilidades comunes")
-                        
-                except Exception as e:
-                    st.error(f"Error al escanear: {str(e)}")
+                    st.subheader("📚 Explicación de las Vulnerabilidades")
+                    explicacion = groq_explicacion_vulnerabilidades(vulnerabilidades)
+                    st.markdown(explicacion)
+                else:
+                    st.success("✅ No se encontraron vulnerabilidades comunes.")
     
     with tab6:
         st.subheader("🔐 Verificador de Fugas de Datos")
