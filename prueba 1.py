@@ -116,24 +116,24 @@ vectorizer = CountVectorizer(vocabulary=all_words)
 X_train = vectorizer.transform(patterns).toarray()
 
 # Cargar modelo de chatbot
+# Elimina el modelo existente para forzar reentrenamiento
+if os.path.exists('chatbot_model.h5'):
+    os.remove('chatbot_model.h5')
+
 @st.cache_resource
 def cargar_modelo_chatbot():
     model = Sequential([
-        Dense(128, input_shape=(X_train.shape[1],), activation='relu'),
+        Dense(128, input_shape=(X_train.shape[1],), activation='relu'),  # Ajuste automático
         Dropout(0.3),
         Dense(64, activation='relu'),
         Dense(len(set(tags)), activation='softmax')
     ])
     model.compile(loss='sparse_categorical_crossentropy', 
-                 optimizer='adam', 
+                 optimizer=Adam(0.001), 
                  metrics=['accuracy'])
     
-    if os.path.exists('chatbot_model.h5'):
-        model.load_weights('chatbot_model.h5')
-    else:
-        model.fit(X_train, y_train, epochs=150, batch_size=5, verbose=0)
-        model.save('chatbot_model.h5')
-    
+    model.fit(X_train, y_train, epochs=150, batch_size=5, verbose=0)
+    model.save('chatbot_model.h5')
     return model
 
 modelo_chatbot = cargar_modelo_chatbot()
@@ -142,25 +142,34 @@ modelo_chatbot = cargar_modelo_chatbot()
 # Función de respuesta del chatbot
 def respuesta_chatbot(texto_usuario):
     try:
+        # Preprocesamiento
+        # Preprocesamiento consistente
         palabras = nltk.word_tokenize(texto_usuario)
         palabras = [stemmer.stem(w.lower()) for w in palabras if w.isalnum()]
         
+        # Crear BoW
         bow = np.zeros(len(all_words))
         for palabra in palabras:
             if palabra in all_words:
                 bow[all_words.index(palabra)] = 1
-        
+                
+        # Validación crítica
+        if len(bow) != modelo_chatbot.input_shape[1]:
+            return f"Error: Dimensión inválida ({len(bow)} vs {modelo_chatbot.input_shape[1]})"
+
+        # Predicción
         prediccion = modelo_chatbot.predict(np.array([bow]), verbose=0)[0]
         tag = encoder.inverse_transform([np.argmax(prediccion)])[0]
         
+        # Respuesta
         for intent in intents['intents']:
             if intent['tag'] == tag:
                 return np.random.choice(intent['responses'])
         
-        return "Lo siento, no entendí. ¿Podrías reformularlo?"
+        return "No entendí. ¿Podrías reformularlo?"
     
     except Exception as e:
-        return f"Error en el chatbot: {str(e)}"
+        return f"Error: {str(e)}"
     
     # Crear BoW
     #bow = np.zeros(len(all_words))
