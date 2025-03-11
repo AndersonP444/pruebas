@@ -3,6 +3,7 @@ import hashlib
 import pandas as pd
 import numpy as np
 import re
+import openai
 import requests
 import joblib
 import tensorflow as tf
