@@ -15,6 +15,69 @@
             "tag": "agradecimientos",
             "patterns": ["gracias", "muchas gracias", "mil gracias", "muy amable", "se lo agradezco"],
             "responses": ["De nada", "Feliz por ayudarte", "Gracias a ti", "Estamos para servirte"]
+        },
+        {
+            "tag": "crear_contrasena",
+            "patterns": [
+                "¿Cómo creo una contraseña segura?",
+                "Quiero crear una contraseña fuerte",
+                "Necesito una contraseña segura",
+                "¿Qué debe tener una contraseña segura?",
+                "Ayúdame a crear una contraseña"
+            ],
+            "responses": [
+                "Para crear una contraseña segura, sigue estos consejos: \n1. Usa al menos 12 caracteres. \n2. Combina mayúsculas, minúsculas, números y símbolos. \n3. Evita usar información personal. \n4. No reutilices contraseñas. \n¿Quieres que genere una contraseña segura por ti?",
+                "Una contraseña segura debe ser larga, única y compleja. ¿Te gustaría que te genere una?"
+            ]
+        },
+        {
+            "tag": "validar_contrasena",
+            "patterns": [
+                "¿Es segura mi contraseña?",
+                "Valida mi contraseña",
+                "¿Cómo sé si mi contraseña es segura?",
+                "Revisa mi contraseña",
+                "¿Es fuerte mi contraseña?"
+            ],
+            "responses": [
+                "Puedo ayudarte a validar tu contraseña. Por favor, ingresa tu contraseña y te diré si es segura.",
+                "Para validar tu contraseña, asegúrate de que tenga al menos 12 caracteres, mayúsculas, minúsculas, números y símbolos. ¿Quieres que la revise?"
+            ]
+        },
+        {
+            "tag": "generar_contrasena",
+            "patterns": [
+                "Genera una contraseña segura",
+                "Crea una contraseña para mí",
+                "¿Puedes darme una contraseña segura?",
+                "Necesito una contraseña nueva"
+            ],
+            "responses": [
+                "Aquí tienes una contraseña segura generada: {contrasena_generada}",
+                "He creado esta contraseña segura para ti: {contrasena_generada}"
+            ]
+        },
+        {
+            "tag": "consejos_seguridad",
+            "patterns": [
+                "Dame consejos de ciberseguridad",
+                "¿Cómo protejo mis cuentas?",
+                "Consejos para mantener mi información segura",
+                "¿Qué hago para mejorar mi seguridad en línea?"
+            ],
+            "responses": [
+                "Aquí tienes algunos consejos de ciberseguridad: \n1. Usa contraseñas seguras y únicas. \n2. Habilita la autenticación de dos factores. \n3. Mantén tu software actualizado. \n4. No hagas clic en enlaces sospechosos. \n5. Usa una VPN en redes públicas.",
+                "Para mejorar tu seguridad en línea, sigue estas recomendaciones: \n- Cambia tus contraseñas regularmente. \n- No compartas información personal en redes sociales. \n- Usa un administrador de contraseñas."
+            ]
+        },
+        {
+            "tag": "error",
+            "patterns": [],
+            "responses": [
+                "Lo siento, no entendí eso. ¿Puedes repetirlo?",
+                "No estoy seguro de lo que quieres decir. ¿Puedes ser más específico?",
+                "Vaya, no pude entenderte. ¿Puedes intentarlo de nuevo?"
+            ]
         }
     ]
 }
