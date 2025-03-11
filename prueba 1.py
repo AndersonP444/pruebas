@@ -560,45 +560,34 @@ def main():
                     explicaciones = explicar_fortaleza(password)
                     for explicacion in explicaciones:
                         st.write(explicacion)
-                    
-            with col2:
-                st.subheader("🧠 Análisis de Groq")
-                analysis = groq_analysis(password)
-                st.markdown(analysis)
     
     with tab4:
         st.subheader("💬 Asistente de Seguridad")
         
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = [{"role": "assistant", "content": "¡Hola! Soy tu experto en seguridad. Pregúntame sobre:"}]
-
-        for msg in st.session_state.chat_history:
-            with st.chat_message(msg["role"]):
-                st.markdown(msg["content"])
-
-        if prompt := st.chat_input("Escribe tu pregunta..."):
-            st.session_state.chat_history.append({"role": "user", "content": prompt})
+        if "historial_chat" not in st.session_state:
+            st.session_state.historial_chat = []
+        
+        # Mostrar historial
+        for mensaje in st.session_state.historial_chat:
+            with st.chat_message(mensaje["role"]):
+                st.markdown(mensaje["content"])
+        
+        # Manejar nueva entrada
+        if prompt := st.chat_input("Escribe tu pregunta sobre seguridad..."):
+            # Respuesta del chatbot
+            respuesta = respuesta_chatbot(prompt)
             
-            with st.spinner("Analizando..."):
-                try:
-                    response = client.chat.completions.create(
-                        model=MODEL_NAME,
-                        messages=[{
-                            "role": "system",
-                            "content": "Eres un experto en seguridad especializado en gestión de credenciales. Responde solo sobre: contraseñas, llaves de acceso, 2FA, y mejores prácticas."
-                        }] + st.session_state.chat_history[-3:],
-                        temperature=0.3,
-                        max_tokens=300
-                    ).choices[0].message.content
-                    
-                    with st.chat_message("asistente"):
-                        response = respuesta_chatbot(prompt)  # <-- Usa solo esta línea
-                        st.markdown(response)
-                    st.session_state.chat_history.append({"role": "assistant", "content": response})
-                    st.rerun()
-                    
-                except Exception as e:
-                    st.error(f"Error en el chatbot: {str(e)}")
+            # Reemplazar marcador de contraseña si es necesario
+            if "||contraseña||" in respuesta:
+                nueva_contraseña = generar_contraseña_segura()
+                respuesta = respuesta.replace("||contraseña||", f"`{nueva_contraseña}`")
+            
+            # Actualizar historial
+            st.session_state.historial_chat.append({"role": "user", "content": prompt})
+            st.session_state.historial_chat.append({"role": "assistant", "content": respuesta})
+            
+            # Forzar rerun para mostrar actualización
+            st.rerun()
     
     with tab5:
         st.subheader("🌐 Escáner de Vulnerabilidades Web")
@@ -631,3 +620,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
