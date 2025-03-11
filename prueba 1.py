@@ -24,6 +24,33 @@ from sklearn.feature_extraction.text import CountVectorizer
 from tensorflow.keras.optimizers import Adam
 import openai
 
+# Configuración de la página para eliminar "Manage app" y "Share"
+st.set_page_config(
+    page_title="WildPassPro",
+    page_icon="🔐",
+    layout="wide",
+    initial_sidebar_state="auto",
+    menu_items=None  # Desactiva el menú de la esquina superior derecha
+)
+
+# CSS personalizado para ocultar elementos no deseados
+st.markdown(
+    """
+    <style>
+    /* Ocultar la barra de herramientas */
+    .stDeployButton, .stActionButton, .stToolbar {
+        display: none !important;
+    }
+    
+    /* Ocultar el logo de GitHub si está en el sidebar */
+    .sidebar .stImage {
+        display: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Configuración de Groq
 GROQ_API_KEY = "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"
 MODEL_NAME = "llama3-70b-8192"
