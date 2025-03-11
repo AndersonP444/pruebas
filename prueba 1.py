@@ -387,6 +387,30 @@ def verificar_fuga_datos(password):
     except Exception as e:
         return f"🔴 **Error:** {str(e)}"
 
+# ========== FUNCIÓN PARA ANALIZAR CONTRASEÑA CON GROQ ==========
+def analizar_contraseña_con_groq(password):
+    # Crear el mensaje para Groq
+    mensaje = f"""
+    Analiza la siguiente contraseña y proporciona una explicación detallada de por qué es débil o fuerte:
+    Contraseña: {password}
+
+    Si es débil, enumera las vulnerabilidades críticas, compara con patrones comunes y proporciona recomendaciones personalizadas.
+    Si es fuerte, explica qué características la hacen segura y por qué es resistente a ataques.
+    """
+
+    # Enviar la solicitud a Groq
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": "Eres un experto en seguridad de contraseñas."},
+            {"role": "user", "content": mensaje}
+        ]
+    )
+
+    # Obtener la respuesta de Groq
+    explicacion = response.choices[0].message.content
+    return explicacion
+
 # ========== INTERFAZ PRINCIPAL ==========
 def main():
     st.markdown(f"""
@@ -516,12 +540,15 @@ def main():
     with tab3:
         st.subheader("🔍 Analizar Contraseña")
         password = st.text_input("Ingresa tu contraseña:", type="password", key="pwd_input")
+        
         if password:
-            weaknesses = detectar_debilidades(password)  # Corregido aquí
+            weaknesses = detectar_debilidades(password)
             final_strength = "DÉBIL 🔴" if weaknesses else "FUERTE 🟢"
+            
             strength_prediction = predecir_fortaleza(model, password)
             strength_labels = ["DÉBIL 🔴", "MEDIA 🟡", "FUERTE 🟢"]
             neural_strength = strength_labels[strength_prediction]
+            
             col1, col2 = st.columns([1, 2])
             with col1:
                 st.subheader("📋 Clasificación Final")
@@ -532,13 +559,22 @@ def main():
                         st.write(weakness)
                 else:
                     st.success("### Cumple con todos los criterios")
+                
                 st.subheader("🧠 Predicción de Red Neuronal")
                 st.markdown(f"## {neural_strength}")
+                
                 if strength_prediction == 2:
                     st.success("### Explicación de la fortaleza:")
                     explicaciones = explicar_fortaleza(password)
                     for explicacion in explicaciones:
                         st.write(explicacion)
+            
+            with col2:
+                st.subheader("📝 Análisis Detallado con Groq")
+                if st.button("Obtener Análisis Detallado"):
+                    with st.spinner("Analizando contraseña..."):
+                        explicacion = analizar_contraseña_con_groq(password)
+                        st.markdown(f"### Explicación:\n{explicacion}")
     
     with tab4:
         st.subheader("💬 Asistente de Seguridad")
