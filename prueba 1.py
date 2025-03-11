@@ -606,33 +606,38 @@ def main():
         st.subheader("🔍 Analizar Contraseña")
         password = st.text_input("Ingresa tu contraseña:", type="password", key="pwd_input")
         
-        if password:
-            weaknesses = detect_weakness(password)
-            final_strength = "DÉBIL 🔴" if weaknesses else "FUERTE 🟢"
+        with tab3:
+    st.subheader("🔍 Analizar Contraseña")
+    password = st.text_input("Ingresa tu contraseña:", type="password", key="pwd_input")
+    
+    if password:
+        # Cambia detect_weakness por detectar_debilidades
+        weaknesses = detectar_debilidades(password)
+        final_strength = "DÉBIL 🔴" if weaknesses else "FUERTE 🟢"
+        
+        strength_prediction = predecir_fortaleza(model, password)
+        strength_labels = ["DÉBIL 🔴", "MEDIA 🟡", "FUERTE 🟢"]
+        neural_strength = strength_labels[strength_prediction]
+        
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            st.subheader("📋 Clasificación Final")
+            st.markdown(f"## {final_strength}")
+            if weaknesses:
+                st.error("### Razones de debilidad:")
+                for weakness in weaknesses:
+                    st.write(weakness)
+            else:
+                st.success("### Cumple con todos los criterios")
             
-            strength_prediction = predecir_fortaleza(model, password)
-            strength_labels = ["DÉBIL 🔴", "MEDIA 🟡", "FUERTE 🟢"]
-            neural_strength = strength_labels[strength_prediction]
+            st.subheader("🧠 Predicción de Red Neuronal")
+            st.markdown(f"## {neural_strength}")
             
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                st.subheader("📋 Clasificación Final")
-                st.markdown(f"## {final_strength}")
-                if weaknesses:
-                    st.error("### Razones de debilidad:")
-                    for weakness in weaknesses:
-                        st.write(weakness)
-                else:
-                    st.success("### Cumple con todos los criterios")
-                
-                st.subheader("🧠 Predicción de Red Neuronal")
-                st.markdown(f"## {neural_strength}")
-                
-                if strength_prediction == 2:
-                    st.success("### Explicación de la fortaleza:")
-                    explicaciones = explicar_fortaleza(password)
-                    for explicacion in explicaciones:
-                        st.write(explicacion)
+            if strength_prediction == 2:
+                st.success("### Explicación de la fortaleza:")
+                explicaciones = explicar_fortaleza(password)
+                for explicacion in explicaciones:
+                    st.write(explicacion)
     
     with tab4:
         st.subheader("💬 Asistente de Seguridad")
