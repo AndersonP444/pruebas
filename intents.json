@@ -1,83 +1,745 @@
-
 {
-    "intents": [
-        {
-            "tag": "saludo",
-            "patterns": ["Hola", "¿Cómo estás?", "Buenos días", "¡Hola!", "¿Qué tal?"],
-            "responses": ["¡Hola! ¿Cómo puedo ayudarte?", "¡Hola! ¿En qué puedo ayudarte hoy?"]
-        },
-        {
-            "tag": "despedida",
-            "patterns": ["Adiós", "Hasta luego", "Nos vemos", "Hasta pronto"],
-            "responses": ["¡Hasta luego! Que tengas un buen día.", "¡Adiós! ¡Vuelve pronto!"]
-        },
-        {
-            "tag": "agradecimientos",
-            "patterns": ["gracias", "muchas gracias", "mil gracias", "muy amable", "se lo agradezco"],
-            "responses": ["De nada", "Feliz por ayudarte", "Gracias a ti", "Estamos para servirte"]
-        },
-        {
-            "tag": "crear_contrasena",
-            "patterns": [
-                "¿Cómo creo una contraseña segura?",
-                "Quiero crear una contraseña fuerte",
-                "Necesito una contraseña segura",
-                "¿Qué debe tener una contraseña segura?",
-                "Ayúdame a crear una contraseña"
-            ],
-            "responses": [
-                "Para crear una contraseña segura, sigue estos consejos: \n1. Usa al menos 12 caracteres. \n2. Combina mayúsculas, minúsculas, números y símbolos. \n3. Evita usar información personal. \n4. No reutilices contraseñas. \n¿Quieres que genere una contraseña segura por ti?",
-                "Una contraseña segura debe ser larga, única y compleja. ¿Te gustaría que te genere una?"
-            ]
-        },
-        {
-            "tag": "validar_contrasena",
-            "patterns": [
-                "¿Es segura mi contraseña?",
-                "Valida mi contraseña",
-                "¿Cómo sé si mi contraseña es segura?",
-                "Revisa mi contraseña",
-                "¿Es fuerte mi contraseña?"
-            ],
-            "responses": [
-                "Puedo ayudarte a validar tu contraseña. Por favor, ingresa tu contraseña y te diré si es segura.",
-                "Para validar tu contraseña, asegúrate de que tenga al menos 12 caracteres, mayúsculas, minúsculas, números y símbolos. ¿Quieres que la revise?"
-            ]
-        },
-        {
-            "tag": "generar_contrasena",
-            "patterns": [
-                "Genera una contraseña segura",
-                "Crea una contraseña para mí",
-                "¿Puedes darme una contraseña segura?",
-                "Necesito una contraseña nueva"
-            ],
-            "responses": [
-                "Aquí tienes una contraseña segura generada: {generar_contraseña_segura}",
-                "He creado esta contraseña segura para ti: {generar_contraseña_segura}"
-            ]
-        },
-        {
-            "tag": "consejos_seguridad",
-            "patterns": [
-                "Dame consejos de ciberseguridad",
-                "¿Cómo protejo mis cuentas?",
-                "Consejos para mantener mi información segura",
-                "¿Qué hago para mejorar mi seguridad en línea?"
-            ],
-            "responses": [
-                "Aquí tienes algunos consejos de ciberseguridad: \n1. Usa contraseñas seguras y únicas. \n2. Habilita la autenticación de dos factores. \n3. Mantén tu software actualizado. \n4. No hagas clic en enlaces sospechosos. \n5. Usa una VPN en redes públicas.",
-                "Para mejorar tu seguridad en línea, sigue estas recomendaciones: \n- Cambia tus contraseñas regularmente. \n- No compartas información personal en redes sociales. \n- Usa un administrador de contraseñas."
-            ]
-        },
-        {
-            "tag": "error",
-            "patterns": [],
-            "responses": [
-                "Lo siento, no entendí eso. ¿Puedes repetirlo?",
-                "No estoy seguro de lo que quieres decir. ¿Puedes ser más específico?",
-                "Vaya, no pude entenderte. ¿Puedes intentarlo de nuevo?"
-            ]
-        }
-    ]
+  "intents": [
+    {
+      "tag": "saludo",
+      "patterns": [
+        "Hola",
+        "¿Cómo estás?",
+        "Buenos días",
+        "Buenas tardes",
+        "Buenas noches",
+        "Hola, ¿qué tal?",
+        "¿Qué onda?",
+        "¿Cómo te va?"
+      ],
+      "responses": [
+        "¡Hola! Soy tu asistente de seguridad. ¿En qué puedo ayudarte hoy?",
+        "¡Hola! Estoy aquí para ayudarte con todo lo relacionado con seguridad. ¿Qué necesitas?",
+        "¡Hola! ¿En qué puedo asistirte hoy?"
+      ]
+    },
+    {
+      "tag": "despedida",
+      "patterns": [
+        "Adiós",
+        "Hasta luego",
+        "Nos vemos",
+        "Chao",
+        "Hasta pronto",
+        "Bye",
+        "Nos vemos luego"
+      ],
+      "responses": [
+        "¡Adiós! Recuerda mantener tus contraseñas seguras.",
+        "¡Hasta luego! No dudes en volver si necesitas más ayuda.",
+        "¡Chao! Cuida tu seguridad en línea."
+      ]
+    },
+    {
+      "tag": "generar_contraseña",
+      "patterns": [
+        "Genera una contraseña segura",
+        "Necesito una contraseña fuerte",
+        "¿Puedes crear una contraseña para mí?",
+        "Contraseña segura",
+        "Crea una contraseña",
+        "Generar contraseña",
+        "Dame una contraseña segura"
+      ],
+      "responses": [
+        "Aquí tienes una contraseña segura: ||contraseña||",
+        "Claro, aquí tienes una contraseña fuerte: ||contraseña||",
+        "Esta es una contraseña segura para ti: ||contraseña||"
+      ]
+    },
+    {
+      "tag": "analizar_contraseña",
+      "patterns": [
+        "Analiza esta contraseña",
+        "¿Es segura esta contraseña?",
+        "Revisa mi contraseña",
+        "¿Qué opinas de esta contraseña?",
+        "Evalúa esta contraseña",
+        "¿Es fuerte esta contraseña?",
+        "Checa esta contraseña"
+      ],
+      "responses": [
+        "Por favor, ingresa la contraseña que deseas analizar.",
+        "Claro, ingresa la contraseña y la revisaré por ti.",
+        "Dame la contraseña y la analizaré para ti."
+      ]
+    },
+    {
+      "tag": "guardar_contraseña",
+      "patterns": [
+        "Guarda esta contraseña",
+        "¿Cómo guardo una contraseña?",
+        "Quiero guardar una contraseña",
+        "Guardar contraseña en la bóveda",
+        "Almacenar contraseña",
+        "Guardar clave",
+        "¿Dónde guardo mi contraseña?"
+      ],
+      "responses": [
+        "Para guardar una contraseña, ve a la pestaña 'Bóveda' y sigue las instrucciones.",
+        "Puedes guardar tus contraseñas en la bóveda de contraseñas. Ve a la pestaña 'Bóveda' para más detalles.",
+        "Guarda tus contraseñas en la bóveda. Ve a la pestaña 'Bóveda' y añade una nueva contraseña."
+      ]
+    },
+    {
+      "tag": "ver_contraseñas",
+      "patterns": [
+        "Muestra mis contraseñas",
+        "¿Dónde están mis contraseñas?",
+        "Ver contraseñas guardadas",
+        "Acceder a la bóveda",
+        "Ver mis claves",
+        "¿Cómo veo mis contraseñas?",
+        "Mostrar contraseñas"
+      ],
+      "responses": [
+        "Puedes ver tus contraseñas guardadas en la pestaña 'Bóveda'.",
+        "Tus contraseñas están seguras en la bóveda. Ve a la pestaña 'Bóveda' para acceder a ellas.",
+        "Accede a la bóveda en la pestaña 'Bóveda' para ver tus contraseñas guardadas."
+      ]
+    },
+    {
+      "tag": "eliminar_contraseña",
+      "patterns": [
+        "Elimina una contraseña",
+        "¿Cómo borro una contraseña?",
+        "Quiero eliminar una contraseña",
+        "Borrar contraseña de la bóveda",
+        "Eliminar clave",
+        "Quitar contraseña",
+        "¿Cómo elimino una contraseña guardada?"
+      ],
+      "responses": [
+        "Para eliminar una contraseña, ve a la pestaña 'Bóveda' y selecciona la contraseña que deseas eliminar.",
+        "Puedes eliminar contraseñas desde la bóveda. Ve a la pestaña 'Bóveda' para más detalles.",
+        "Elimina contraseñas desde la bóveda. Ve a la pestaña 'Bóveda' y selecciona la contraseña que deseas borrar."
+      ]
+    },
+    {
+      "tag": "generar_llave",
+      "patterns": [
+        "Genera una llave de acceso",
+        "Necesito una llave segura",
+        "¿Puedes crear una llave para mí?",
+        "Llave de acceso segura",
+        "Crear llave de acceso",
+        "Generar llave",
+        "Dame una llave segura"
+      ],
+      "responses": [
+        "Aquí tienes una llave de acceso segura: ||llave||",
+        "Claro, aquí tienes una llave de acceso fuerte: ||llave||",
+        "Esta es una llave de acceso segura para ti: ||llave||"
+      ]
+    },
+    {
+      "tag": "escanear_vulnerabilidades",
+      "patterns": [
+        "Escanear un sitio web",
+        "¿Cómo escaneo un sitio?",
+        "Revisar vulnerabilidades",
+        "Escáner de seguridad",
+        "Analizar sitio web",
+        "Checar vulnerabilidades",
+        "¿Cómo reviso un sitio web?"
+      ],
+      "responses": [
+        "Para escanear un sitio web, ve a la pestaña 'Escáner Web' e ingresa la URL.",
+        "Puedes escanear sitios web en busca de vulnerabilidades en la pestaña 'Escáner Web'.",
+        "Escanea sitios web en la pestaña 'Escáner Web'. Ingresa la URL y comienza el análisis."
+      ]
+    },
+    {
+      "tag": "verificar_fuga",
+      "patterns": [
+        "Verificar si mi contraseña ha sido comprometida",
+        "¿Ha sido filtrada mi contraseña?",
+        "Revisar fuga de datos",
+        "Verificar fuga de contraseña",
+        "Checar si mi contraseña fue filtrada",
+        "¿Mi contraseña está en una fuga?",
+        "Revisar si mi clave fue comprometida"
+      ],
+      "responses": [
+        "Para verificar si tu contraseña ha sido comprometida, ve a la pestaña 'Verificador de Fugas' e ingresa tu contraseña.",
+        "Puedes verificar si tu contraseña ha sido expuesta en fugas de datos en la pestaña 'Verificador de Fugas'.",
+        "Revisa si tu contraseña ha sido comprometida en la pestaña 'Verificador de Fugas'."
+      ]
+    },
+    {
+      "tag": "ayuda",
+      "patterns": [
+        "¿Cómo funciona esto?",
+        "Necesito ayuda",
+        "¿Qué puedo hacer aquí?",
+        "Ayuda",
+        "¿Cómo uso esta aplicación?",
+        "¿Qué opciones tengo?",
+        "¿Cómo me ayudas?"
+      ],
+      "responses": [
+        "Puedo ayudarte a generar contraseñas seguras, analizar contraseñas, guardar contraseñas, escanear sitios web y más. ¿Qué necesitas?",
+        "Estoy aquí para ayudarte con la seguridad de tus contraseñas y sitios web. ¿En qué puedo ayudarte?",
+        "Puedo ayudarte con la generación de contraseñas, análisis de seguridad, y más. ¿Qué necesitas?"
+      ]
+    },
+    {
+      "tag": "agradecimiento",
+      "patterns": [
+        "Gracias",
+        "Muchas gracias",
+        "Te lo agradezco",
+        "Gracias por la ayuda",
+        "Mil gracias",
+        "Agradecido",
+        "Gracias, eres genial"
+      ],
+      "responses": [
+        "¡De nada! Siempre estoy aquí para ayudarte.",
+        "¡No hay problema! Si necesitas más ayuda, no dudes en preguntar.",
+        "¡Gracias a ti! Recuerda que estoy aquí para lo que necesites."
+      ]
+    },
+    {
+      "tag": "seguridad_contraseñas",
+      "patterns": [
+        "¿Cómo hago una contraseña segura?",
+        "Consejos para contraseñas seguras",
+        "¿Qué hace que una contraseña sea segura?",
+        "Recomendaciones para contraseñas",
+        "¿Cómo crear una contraseña fuerte?",
+        "Tips para contraseñas seguras",
+        "¿Qué debe tener una contraseña segura?"
+      ],
+      "responses": [
+        "Una contraseña segura debe tener al menos 12 caracteres, incluir mayúsculas, minúsculas, números y símbolos. Evita usar nombres comunes o secuencias simples.",
+        "Para una contraseña segura, usa una combinación de letras, números y símbolos. Además, asegúrate de que sea larga y no uses información personal.",
+        "Una contraseña fuerte debe ser larga, única y contener una mezcla de caracteres. Evita usar palabras comunes o secuencias predecibles."
+      ]
+    },
+    {
+      "tag": "error",
+      "patterns": [],
+      "responses": [
+        "Lo siento, no entendí. ¿Podrías reformularlo?",
+        "No estoy seguro de lo que quieres decir. ¿Puedes intentarlo de nuevo?",
+        "No capté eso. ¿Podrías decirlo de otra manera?"
+      ]
+    },
+    {
+      "tag": "cambiar_contraseña",
+      "patterns": [
+        "¿Cómo cambio mi contraseña?",
+        "Quiero cambiar mi contraseña",
+        "Cambiar clave",
+        "Actualizar contraseña",
+        "Modificar contraseña",
+        "¿Cómo actualizo mi contraseña?",
+        "Necesito cambiar mi clave"
+      ],
+      "responses": [
+        "Para cambiar tu contraseña, ve a la configuración de seguridad de la plataforma donde deseas hacer el cambio.",
+        "Cambia tu contraseña desde la configuración de seguridad de tu cuenta. Asegúrate de usar una contraseña fuerte.",
+        "Actualiza tu contraseña en la sección de seguridad de tu cuenta. Recuerda seguir las recomendaciones para contraseñas seguras."
+      ]
+    },
+    {
+      "tag": "recuperar_contraseña",
+      "patterns": [
+        "Olvidé mi contraseña",
+        "¿Cómo recupero mi contraseña?",
+        "No recuerdo mi clave",
+        "Recuperar contraseña",
+        "¿Qué hago si olvidé mi contraseña?",
+        "Necesito recuperar mi clave",
+        "Perdí mi contraseña"
+      ],
+      "responses": [
+        "Para recuperar tu contraseña, ve a la opción 'Olvidé mi contraseña' en la plataforma correspondiente.",
+        "Recupera tu contraseña utilizando la opción de recuperación en la plataforma donde la olvidaste.",
+        "Si olvidaste tu contraseña, sigue el proceso de recuperación en la plataforma correspondiente."
+      ]
+    },
+    {
+      "tag": "autenticacion_dos_factores",
+      "patterns": [
+        "¿Qué es la autenticación de dos factores?",
+        "Autenticación de dos factores",
+        "2FA",
+        "¿Cómo funciona la autenticación de dos factores?",
+        "Seguridad de dos factores",
+        "¿Qué es 2FA?",
+        "Autenticación en dos pasos"
+      ],
+      "responses": [
+        "La autenticación de dos factores (2FA) añade una capa adicional de seguridad a tus cuentas. Requiere algo que sabes (tu contraseña) y algo que tienes (un código enviado a tu teléfono).",
+        "2FA es un método de seguridad que requiere dos formas de verificación para acceder a una cuenta. Esto hace que sea más difícil para los atacantes acceder a tus cuentas.",
+        "La autenticación de dos factores mejora la seguridad al requerir un segundo paso de verificación, como un código enviado a tu teléfono."
+      ]
+    },
+    {
+      "tag": "gestor_contraseñas",
+      "patterns": [
+        "¿Qué es un gestor de contraseñas?",
+        "Gestor de contraseñas",
+        "¿Cómo funciona un gestor de contraseñas?",
+        "Recomendaciones de gestores de contraseñas",
+        "¿Debo usar un gestor de contraseñas?",
+        "Gestor de claves",
+        "¿Qué gestor de contraseñas me recomiendas?"
+      ],
+      "responses": [
+        "Un gestor de contraseñas es una herramienta que almacena y gestiona tus contraseñas de forma segura. Te permite usar contraseñas únicas y complejas sin tener que recordarlas todas.",
+        "Los gestores de contraseñas son herramientas que te ayudan a almacenar y generar contraseñas seguras. Algunos populares son LastPass, Dashlane y 1Password.",
+        "Un gestor de contraseñas es esencial para mantener tus cuentas seguras. Te recomiendo usar uno como LastPass o 1Password."
+      ]
+    },
+    {
+      "tag": "phishing",
+      "patterns": [
+        "¿Qué es el phishing?",
+        "Phishing",
+        "¿Cómo evitar el phishing?",
+        "¿Qué hago si caí en phishing?",
+        "Consejos para evitar phishing",
+        "¿Cómo detectar phishing?",
+        "Ataques de phishing"
+      ],
+      "responses": [
+        "El phishing es un tipo de ataque en el que los atacantes intentan engañarte para que reveles información personal, como contraseñas o números de tarjetas de crédito.",
+        "Para evitar el phishing, nunca hagas clic en enlaces sospechosos o descargues archivos de correos electrónicos no verificados.",
+        "Si crees que has sido víctima de phishing, cambia tus contraseñas inmediatamente y contacta a tu banco si es necesario."
+      ]
+    },
+    {
+      "tag": "seguridad_wifi",
+      "patterns": [
+        "¿Cómo asegurar mi red WiFi?",
+        "Seguridad de WiFi",
+        "Proteger mi red inalámbrica",
+        "¿Cómo hago mi WiFi más seguro?",
+        "Consejos para WiFi seguro",
+        "Seguridad en redes inalámbricas",
+        "¿Qué hacer para proteger mi WiFi?"
+      ],
+      "responses": [
+        "Para asegurar tu red WiFi, cambia la contraseña predeterminada del router, usa encriptación WPA3 y oculta el nombre de tu red (SSID).",
+        "Protege tu WiFi usando una contraseña fuerte, actualizando el firmware del router y desactivando WPS.",
+        "Asegura tu red WiFi cambiando la contraseña, usando encriptación fuerte y limitando el acceso a dispositivos conocidos."
+      ]
+    },
+    {
+      "tag": "actualizar_software",
+      "patterns": [
+        "¿Por qué es importante actualizar el software?",
+        "Actualizar software",
+        "¿Cómo actualizo mi software?",
+        "Importancia de las actualizaciones",
+        "Actualizaciones de seguridad",
+        "¿Qué pasa si no actualizo mi software?",
+        "Consejos para actualizar software"
+      ],
+      "responses": [
+        "Actualizar el software es crucial porque las actualizaciones a menudo incluyen parches de seguridad que protegen contra vulnerabilidades conocidas.",
+        "Mantén tu software actualizado para protegerte contra ataques. Las actualizaciones corrigen fallos de seguridad y mejoran el rendimiento.",
+        "No actualizar tu software puede dejarte expuesto a ataques. Asegúrate de instalar las actualizaciones tan pronto como estén disponibles."
+      ]
+    },
+    {
+      "tag": "backup",
+      "patterns": [
+        "¿Cómo hago un backup de mis datos?",
+        "Backup de datos",
+        "¿Qué es un backup?",
+        "Consejos para hacer backup",
+        "¿Cómo proteger mis datos?",
+        "Copia de seguridad",
+        "¿Qué hacer para respaldar mis datos?"
+      ],
+      "responses": [
+        "Un backup es una copia de seguridad de tus datos. Haz backups regularmente en un disco duro externo o en la nube para protegerte contra pérdidas.",
+        "Para hacer un backup, usa herramientas como Google Drive, Dropbox o un disco duro externo. Asegúrate de hacerlo regularmente.",
+        "Haz copias de seguridad de tus datos importantes en la nube o en un dispositivo externo. Esto te protegerá en caso de pérdida o ataque."
+      ]
+    },
+    {
+      "tag": "seguridad_navegacion",
+      "patterns": [
+        "¿Cómo navegar de forma segura?",
+        "Seguridad en internet",
+        "Consejos para navegar seguro",
+        "¿Cómo proteger mi navegación?",
+        "Navegación segura",
+        "¿Qué hacer para navegar seguro?",
+        "Protección en línea"
+      ],
+      "responses": [
+        "Para navegar de forma segura, usa HTTPS, evita sitios sospechosos y no descargues archivos de fuentes no confiables.",
+        "Protege tu navegación usando un navegador actualizado, extensiones de seguridad y evitando sitios web no seguros.",
+        "Navega de forma segura usando una VPN, evitando redes WiFi públicas y manteniendo tu navegador actualizado."
+      ]
+    },
+    {
+      "tag": "seguridad_correo",
+      "patterns": [
+        "¿Cómo proteger mi correo electrónico?",
+        "Seguridad de correo",
+        "Consejos para correo seguro",
+        "¿Cómo evitar el spam?",
+        "Protección de correo electrónico",
+        "¿Qué hacer para proteger mi email?",
+        "Seguridad en el correo"
+      ],
+      "responses": [
+        "Protege tu correo electrónico usando contraseñas fuertes, autenticación de dos factores y evitando abrir correos sospechosos.",
+        "Para proteger tu correo, no hagas clic en enlaces o archivos adjuntos de remitentes desconocidos y usa filtros de spam.",
+        "Mantén tu correo seguro usando contraseñas únicas, 2FA y revisando regularmente la configuración de seguridad."
+      ]
+    },
+    {
+      "tag": "seguridad_redes_sociales",
+      "patterns": [
+        "¿Cómo proteger mis redes sociales?",
+        "Seguridad en redes sociales",
+        "Consejos para redes sociales seguras",
+        "¿Cómo evitar el robo de cuentas?",
+        "Protección de redes sociales",
+        "¿Qué hacer para proteger mis cuentas?",
+        "Seguridad en Facebook, Instagram, etc."
+      ],
+      "responses": [
+        "Protege tus redes sociales usando contraseñas fuertes, autenticación de dos factores y revisando los permisos de las aplicaciones conectadas.",
+        "Para mantener seguras tus redes sociales, no compartas información personal y revisa regularmente la configuración de privacidad.",
+        "Usa contraseñas únicas y 2FA en tus redes sociales. Además, evita aceptar solicitudes de amistad de desconocidos."
+      ]
+    },
+    {
+      "tag": "seguridad_dispositivos",
+      "patterns": [
+        "¿Cómo proteger mi teléfono?",
+        "Seguridad en dispositivos móviles",
+        "Consejos para proteger mi computadora",
+        "¿Cómo asegurar mi laptop?",
+        "Protección de dispositivos",
+        "¿Qué hacer para proteger mi teléfono?",
+        "Seguridad en smartphones"
+      ],
+      "responses": [
+        "Protege tu teléfono usando un PIN o contraseña fuerte, manteniendo el software actualizado y evitando descargar aplicaciones de fuentes no confiables.",
+        "Para proteger tu computadora, usa un antivirus, mantén el sistema operativo actualizado y haz backups regulares.",
+        "Asegura tus dispositivos usando contraseñas fuertes, encriptación y evitando conectarte a redes WiFi públicas no seguras."
+      ]
+    },
+    {
+      "tag": "seguridad_nube",
+      "patterns": [
+        "¿Cómo proteger mis datos en la nube?",
+        "Seguridad en la nube",
+        "Consejos para nube segura",
+        "¿Cómo asegurar mi almacenamiento en la nube?",
+        "Protección de datos en la nube",
+        "¿Qué hacer para proteger mis archivos en la nube?",
+        "Seguridad en Google Drive, Dropbox, etc."
+      ],
+      "responses": [
+        "Protege tus datos en la nube usando contraseñas fuertes, autenticación de dos factores y encriptación de archivos.",
+        "Para mantener seguros tus archivos en la nube, usa servicios confiables y revisa regularmente los permisos de acceso.",
+        "Asegura tu almacenamiento en la nube usando 2FA, contraseñas únicas y evitando compartir enlaces públicos de tus archivos."
+      ]
+    },
+    {
+      "tag": "seguridad_pagos_online",
+      "patterns": [
+        "¿Cómo proteger mis pagos en línea?",
+        "Seguridad en pagos online",
+        "Consejos para pagos seguros",
+        "¿Cómo evitar fraudes en pagos?",
+        "Protección de pagos en línea",
+        "¿Qué hacer para proteger mis transacciones?",
+        "Seguridad en compras online"
+      ],
+      "responses": [
+        "Protege tus pagos en línea usando tarjetas virtuales, verificando que el sitio web sea seguro (HTTPS) y evitando compartir información en redes públicas.",
+        "Para pagos seguros, usa servicios como PayPal, revisa los detalles de la transacción y no compartas tus datos de tarjeta en sitios no confiables.",
+        "Mantén seguros tus pagos en línea usando autenticación de dos factores y revisando regularmente los estados de cuenta de tu banco."
+      ]
+    },
+    {
+      "tag": "seguridad_niños",
+      "patterns": [
+        "¿Cómo proteger a mis hijos en internet?",
+        "Seguridad para niños",
+        "Consejos para niños en línea",
+        "¿Cómo asegurar el acceso de mis hijos?",
+        "Protección de niños en internet",
+        "¿Qué hacer para proteger a mis hijos en línea?",
+        "Seguridad en internet para niños"
+      ],
+      "responses": [
+        "Protege a tus hijos en internet usando controles parentales, limitando el tiempo de pantalla y enseñándoles sobre los peligros en línea.",
+        "Para mantener seguros a tus hijos, supervisa su actividad en línea y usa herramientas de control parental en dispositivos y aplicaciones.",
+        "Enseña a tus hijos sobre seguridad en internet y usa herramientas como controles parentales para limitar el acceso a contenido inapropiado."
+      ]
+    },
+    {
+      "tag": "seguridad_empresas",
+      "patterns": [
+        "¿Cómo proteger mi empresa en línea?",
+        "Seguridad para empresas",
+        "Consejos para seguridad empresarial",
+        "¿Cómo asegurar los datos de mi empresa?",
+        "Protección de datos empresariales",
+        "¿Qué hacer para proteger mi negocio en línea?",
+        "Seguridad en empresas"
+      ],
+      "responses": [
+        "Protege tu empresa en línea usando firewalls, encriptación de datos y capacitando a tus empleados en seguridad cibernética.",
+        "Para mantener segura tu empresa, implementa políticas de seguridad, haz backups regulares y usa herramientas de detección de intrusiones.",
+        "Asegura los datos de tu empresa usando contraseñas fuertes, autenticación de dos factores y revisando regularmente los permisos de acceso."
+      ]
+    },
+    {
+      "tag": "seguridad_vpn",
+      "patterns": [
+        "¿Qué es una VPN?",
+        "VPN",
+        "¿Cómo funciona una VPN?",
+        "Consejos para usar VPN",
+        "¿Por qué usar una VPN?",
+        "Protección con VPN",
+        "Seguridad en redes públicas con VPN"
+      ],
+      "responses": [
+        "Una VPN (Red Privada Virtual) encripta tu conexión a internet, protegiendo tu privacidad y seguridad en redes públicas.",
+        "Usa una VPN para proteger tu privacidad en línea, especialmente en redes WiFi públicas. Te ayuda a ocultar tu dirección IP y encriptar tu tráfico.",
+        "Una VPN es esencial para navegar de forma segura en redes públicas. Te recomiendo usar servicios como NordVPN o ExpressVPN."
+      ]
+    },
+    {
+      "tag": "seguridad_antivirus",
+      "patterns": [
+        "¿Necesito un antivirus?",
+        "Antivirus",
+        "¿Cómo elegir un antivirus?",
+        "Consejos para antivirus",
+        "¿Qué antivirus me recomiendas?",
+        "Protección con antivirus",
+        "Seguridad con software antivirus"
+      ],
+      "responses": [
+        "Un antivirus es esencial para proteger tu dispositivo contra malware y virus. Te recomiendo usar programas como Norton, McAfee o Bitdefender.",
+        "Elige un antivirus que ofrezca protección en tiempo real, actualizaciones regulares y escaneo de archivos descargados.",
+        "Usa un antivirus confiable para proteger tu dispositivo. Asegúrate de mantenerlo actualizado y ejecutar escaneos regulares."
+      ]
+    },
+    {
+      "tag": "seguridad_criptomonedas",
+      "patterns": [
+        "¿Cómo proteger mis criptomonedas?",
+        "Seguridad en criptomonedas",
+        "Consejos para criptomonedas seguras",
+        "¿Cómo asegurar mi billetera de criptomonedas?",
+        "Protección de criptomonedas",
+        "¿Qué hacer para proteger mis criptoactivos?",
+        "Seguridad en Bitcoin, Ethereum, etc."
+      ],
+      "responses": [
+        "Protege tus criptomonedas usando billeteras hardware, contraseñas fuertes y autenticación de dos factores.",
+        "Para mantener seguras tus criptomonedas, usa billeteras frías (offline) y nunca compartas tus claves privadas.",
+        "Asegura tus criptomonedas usando billeteras confiables, contraseñas únicas y evitando compartir información sensible en línea."
+      ]
+    },
+    {
+      "tag": "seguridad_iot",
+      "patterns": [
+        "¿Cómo proteger mis dispositivos IoT?",
+        "Seguridad en IoT",
+        "Consejos para dispositivos IoT seguros",
+        "¿Cómo asegurar mis dispositivos inteligentes?",
+        "Protección de IoT",
+        "¿Qué hacer para proteger mis dispositivos conectados?",
+        "Seguridad en dispositivos inteligentes"
+      ],
+      "responses": [
+        "Protege tus dispositivos IoT cambiando las contraseñas predeterminadas, actualizando el firmware y usando redes WiFi seguras.",
+        "Para mantener seguros tus dispositivos IoT, desactiva funciones innecesarias y usa encriptación en tu red.",
+        "Asegura tus dispositivos IoT usando contraseñas fuertes, actualizaciones regulares y evitando conectarlos a redes públicas."
+      ]
+    },
+    {
+      "tag": "seguridad_redes",
+      "patterns": [
+        "¿Cómo proteger mi red doméstica?",
+        "Seguridad en redes domésticas",
+        "Consejos para redes seguras",
+        "¿Cómo asegurar mi red local?",
+        "Protección de redes",
+        "¿Qué hacer para proteger mi red?",
+        "Seguridad en redes caseras"
+      ],
+      "responses": [
+        "Protege tu red doméstica cambiando la contraseña del router, usando encriptación WPA3 y ocultando el SSID.",
+        "Para mantener segura tu red, desactiva WPS, limita el acceso a dispositivos conocidos y usa un firewall.",
+        "Asegura tu red doméstica usando contraseñas fuertes, actualizando el firmware del router y monitoreando los dispositivos conectados."
+      ]
+    },
+    {
+      "tag": "seguridad_cloud",
+      "patterns": [
+        "¿Cómo proteger mis datos en la nube?",
+        "Seguridad en la nube",
+        "Consejos para nube segura",
+        "¿Cómo asegurar mi almacenamiento en la nube?",
+        "Protección de datos en la nube",
+        "¿Qué hacer para proteger mis archivos en la nube?",
+        "Seguridad en Google Drive, Dropbox, etc."
+      ],
+      "responses": [
+        "Protege tus datos en la nube usando contraseñas fuertes, autenticación de dos factores y encriptación de archivos.",
+        "Para mantener seguros tus archivos en la nube, usa servicios confiables y revisa regularmente los permisos de acceso.",
+        "Asegura tu almacenamiento en la nube usando 2FA, contraseñas únicas y evitando compartir enlaces públicos de tus archivos."
+      ]
+    },
+    {
+      "tag": "seguridad_pagos_online",
+      "patterns": [
+        "¿Cómo proteger mis pagos en línea?",
+        "Seguridad en pagos online",
+        "Consejos para pagos seguros",
+        "¿Cómo evitar fraudes en pagos?",
+        "Protección de pagos en línea",
+        "¿Qué hacer para proteger mis transacciones?",
+        "Seguridad en compras online"
+      ],
+      "responses": [
+        "Protege tus pagos en línea usando tarjetas virtuales, verificando que el sitio web sea seguro (HTTPS) y evitando compartir información en redes públicas.",
+        "Para pagos seguros, usa servicios como PayPal, revisa los detalles de la transacción y no compartas tus datos de tarjeta en sitios no confiables.",
+        "Mantén seguros tus pagos en línea usando autenticación de dos factores y revisando regularmente los estados de cuenta de tu banco."
+      ]
+    },
+    {
+      "tag": "seguridad_niños",
+      "patterns": [
+        "¿Cómo proteger a mis hijos en internet?",
+        "Seguridad para niños",
+        "Consejos para niños en línea",
+        "¿Cómo asegurar el acceso de mis hijos?",
+        "Protección de niños en internet",
+        "¿Qué hacer para proteger a mis hijos en línea?",
+        "Seguridad en internet para niños"
+      ],
+      "responses": [
+        "Protege a tus hijos en internet usando controles parentales, limitando el tiempo de pantalla y enseñándoles sobre los peligros en línea.",
+        "Para mantener seguros a tus hijos, supervisa su actividad en línea y usa herramientas de control parental en dispositivos y aplicaciones.",
+        "Enseña a tus hijos sobre seguridad en internet y usa herramientas como controles parentales para limitar el acceso a contenido inapropiado."
+      ]
+    },
+    {
+      "tag": "seguridad_empresas",
+      "patterns": [
+        "¿Cómo proteger mi empresa en línea?",
+        "Seguridad para empresas",
+        "Consejos para seguridad empresarial",
+        "¿Cómo asegurar los datos de mi empresa?",
+        "Protección de datos empresariales",
+        "¿Qué hacer para proteger mi negocio en línea?",
+        "Seguridad en empresas"
+      ],
+      "responses": [
+        "Protege tu empresa en línea usando firewalls, encriptación de datos y capacitando a tus empleados en seguridad cibernética.",
+        "Para mantener segura tu empresa, implementa políticas de seguridad, haz backups regulares y usa herramientas de detección de intrusiones.",
+        "Asegura los datos de tu empresa usando contraseñas fuertes, autenticación de dos factores y revisando regularmente los permisos de acceso."
+      ]
+    },
+    {
+      "tag": "seguridad_vpn",
+      "patterns": [
+        "¿Qué es una VPN?",
+        "VPN",
+        "¿Cómo funciona una VPN?",
+        "Consejos para usar VPN",
+        "¿Por qué usar una VPN?",
+        "Protección con VPN",
+        "Seguridad en redes públicas con VPN"
+      ],
+      "responses": [
+        "Una VPN (Red Privada Virtual) encripta tu conexión a internet, protegiendo tu privacidad y seguridad en redes públicas.",
+        "Usa una VPN para proteger tu privacidad en línea, especialmente en redes WiFi públicas. Te ayuda a ocultar tu dirección IP y encriptar tu tráfico.",
+        "Una VPN es esencial para navegar de forma segura en redes públicas. Te recomiendo usar servicios como NordVPN o ExpressVPN."
+      ]
+    },
+    {
+      "tag": "seguridad_antivirus",
+      "patterns": [
+        "¿Necesito un antivirus?",
+        "Antivirus",
+        "¿Cómo elegir un antivirus?",
+        "Consejos para antivirus",
+        "¿Qué antivirus me recomiendas?",
+        "Protección con antivirus",
+        "Seguridad con software antivirus"
+      ],
+      "responses": [
+        "Un antivirus es esencial para proteger tu dispositivo contra malware y virus. Te recomiendo usar programas como Norton, McAfee o Bitdefender.",
+        "Elige un antivirus que ofrezca protección en tiempo real, actualizaciones regulares y escaneo de archivos descargados.",
+        "Usa un antivirus confiable para proteger tu dispositivo. Asegúrate de mantenerlo actualizado y ejecutar escaneos regulares."
+      ]
+    },
+    {
+      "tag": "seguridad_criptomonedas",
+      "patterns": [
+        "¿Cómo proteger mis criptomonedas?",
+        "Seguridad en criptomonedas",
+        "Consejos para criptomonedas seguras",
+        "¿Cómo asegurar mi billetera de criptomonedas?",
+        "Protección de criptomonedas",
+        "¿Qué hacer para proteger mis criptoactivos?",
+        "Seguridad en Bitcoin, Ethereum, etc."
+      ],
+      "responses": [
+        "Protege tus criptomonedas usando billeteras hardware, contraseñas fuertes y autenticación de dos factores.",
+        "Para mantener seguras tus criptomonedas, usa billeteras frías (offline) y nunca compartas tus claves privadas.",
+        "Asegura tus criptomonedas usando billeteras confiables, contraseñas únicas y evitando compartir información sensible en línea."
+      ]
+    },
+    {
+      "tag": "seguridad_iot",
+      "patterns": [
+        "¿Cómo proteger mis dispositivos IoT?",
+        "Seguridad en IoT",
+        "Consejos para dispositivos IoT seguros",
+        "¿Cómo asegurar mis dispositivos inteligentes?",
+        "Protección de IoT",
+        "¿Qué hacer para proteger mis dispositivos conectados?",
+        "Seguridad en dispositivos inteligentes"
+      ],
+      "responses": [
+        "Protege tus dispositivos IoT cambiando las contraseñas predeterminadas, actualizando el firmware y usando redes WiFi seguras.",
+        "Para mantener seguros tus dispositivos IoT, desactiva funciones innecesarias y usa encriptación en tu red.",
+        "Asegura tus dispositivos IoT usando contraseñas fuertes, actualizaciones regulares y evitando conectarlos a redes públicas."
+      ]
+    },
+    {
+      "tag": "seguridad_redes",
+      "patterns": [
+        "¿Cómo proteger mi red doméstica?",
+        "Seguridad en redes domésticas",
+        "Consejos para redes seguras",
+        "¿Cómo asegurar mi red local?",
+        "Protección de redes",
+        "¿Qué hacer para proteger mi red?",
+        "Seguridad en redes caseras"
+      ],
+      "responses": [
+        "Protege tu red doméstica cambiando la contraseña del router, usando encriptación WPA3 y ocultando el SSID.",
+        "Para mantener segura tu red, desactiva WPS, limita el acceso a dispositivos conocidos y usa un firewall.",
+        "Asegura tu red doméstica usando contraseñas fuertes, actualizando el firmware del router y monitoreando los dispositivos conectados."
+      ]
+    }
+  ]
 }
