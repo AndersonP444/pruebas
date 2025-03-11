@@ -570,7 +570,7 @@ def main():
                         st.write(explicacion)
             
             with col2:
-                st.subheader("📝 Análisis Detallado con Groq")
+                st.subheader("📝 Análisis Detallado")
                 if st.button("Obtener Análisis Detallado"):
                     with st.spinner("Analizando contraseña..."):
                         explicacion = analizar_contraseña_con_groq(password)
