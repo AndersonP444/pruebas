@@ -482,7 +482,7 @@ def main():
             st.markdown("### 🔑 Generar Contraseña Segura")
             password_length = st.slider("Longitud de la contraseña", 12, 32, 16)
             if st.button("Generar Contraseña"):
-                secure_password = generate_secure_password(password_length)
+                secure_password = generar_contraseña_segura(password_length)  # <-- Nombre en español
                 st.success(f"**Contraseña generada:** `{secure_password}`")
                 
                 buffer = descargar_contraseñas_txt([secure_password])
@@ -588,7 +588,7 @@ def main():
             
             # Reemplazar marcador de contraseña si es necesario
             if "||contraseña||" in respuesta:
-                nueva_contraseña = generar_contraseña_segura()
+                nueva_contraseña = generar_contraseña_segura()  # <-- Nombre en español
                 respuesta = respuesta.replace("||contraseña||", f"`{nueva_contraseña}`")
             
             # Actualizar historial
@@ -629,4 +629,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
