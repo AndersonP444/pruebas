@@ -53,8 +53,8 @@
                 "Necesito una contraseña nueva"
             ],
             "responses": [
-                "Aquí tienes una contraseña segura generada: {contrasena_generada}",
-                "He creado esta contraseña segura para ti: {contrasena_generada}"
+                "Aquí tienes una contraseña segura generada: {generar_contraseña_segura}",
+                "He creado esta contraseña segura para ti: {generar_contraseña_segura}"
             ]
         },
         {
