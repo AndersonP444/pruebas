@@ -740,6 +740,408 @@
         "Para mantener segura tu red, desactiva WPS, limita el acceso a dispositivos conocidos y usa un firewall.",
         "Asegura tu red doméstica usando contraseñas fuertes, actualizando el firmware del router y monitoreando los dispositivos conectados."
       ]
-    }
-  ]
-}
+    },
+    {
+      "tag": "contraseña_maestra",
+      "patterns": [
+        "¿Qué es una contraseña maestra?",
+        "Contraseña maestra",
+        "¿Cómo funciona una contraseña maestra?",
+        "Definición de contraseña maestra"
+      ],
+      "responses": [
+        "Una contraseña maestra es una contraseña única y segura que se utiliza para acceder a un gestor de contraseñas. Protege todas las demás contraseñas almacenadas en el gestor.",
+        "La contraseña maestra es la clave principal para acceder a tu gestor de contraseñas. Debe ser extremadamente segura y única.",
+        "Es la contraseña que usas para desbloquear tu gestor de contraseñas. Asegúrate de que sea fuerte y no la compartas con nadie."
+      ]
+    },
+    {
+      "tag": "ataque_fuerza_bruta",
+      "patterns": [
+        "¿Qué es un ataque de fuerza bruta?",
+        "Ataque de fuerza bruta",
+        "¿Cómo funciona un ataque de fuerza bruta?",
+        "Definición de ataque de fuerza bruta"
+      ],
+      "responses": [
+        "Un ataque de fuerza bruta es cuando un atacante intenta adivinar una contraseña probando todas las combinaciones posibles hasta encontrar la correcta. Por eso es importante usar contraseñas largas y complejas.",
+        "Es un método en el que un hacker prueba todas las combinaciones posibles de contraseñas hasta encontrar la correcta. Las contraseñas largas y complejas son más difíciles de adivinar.",
+        "En un ataque de fuerza bruta, el atacante prueba miles de combinaciones de contraseñas. Por eso es crucial usar contraseñas únicas y difíciles de adivinar."
+      ]
+    },
+    {
+      "tag": "hash_contraseña",
+      "patterns": [
+        "¿Qué es un hash de contraseña?",
+        "Hash de contraseña",
+        "¿Cómo funciona el hash de contraseñas?",
+        "Definición de hash de contraseña"
+      ],
+      "responses": [
+        "Un hash de contraseña es una representación cifrada de una contraseña. Los sistemas almacenan hashes en lugar de contraseñas en texto plano para protegerlas en caso de una filtración de datos.",
+        "El hash es una versión encriptada de tu contraseña. Los sistemas lo usan para proteger tus credenciales sin almacenar la contraseña real.",
+        "Es un código único generado a partir de tu contraseña. Los hashes son seguros porque no se pueden revertir para obtener la contraseña original."
+      ]
+    },
+    {
+      "tag": "salt_criptografia",
+      "patterns": [
+        "¿Qué es la sal en criptografía?",
+        "Sal en criptografía",
+        "¿Cómo funciona la sal en contraseñas?",
+        "Definición de sal en criptografía"
+      ],
+      "responses": [
+        "La sal es un valor aleatorio que se añade a una contraseña antes de aplicar el hash. Esto hace que incluso contraseñas idénticas tengan hashes diferentes, lo que aumenta la seguridad.",
+        "Es un valor aleatorio que se agrega a las contraseñas antes de encriptarlas. Esto evita que dos contraseñas iguales tengan el mismo hash.",
+        "La sal es una técnica de seguridad que añade aleatoriedad a las contraseñas antes de hashearlas, lo que dificulta los ataques de fuerza bruta."
+      ]
+    },
+    {
+      "tag": "verificar_filtracion_contraseña",
+      "patterns": [
+        "¿Cómo sé si mi contraseña ha sido filtrada?",
+        "Verificar si mi contraseña fue filtrada",
+        "¿Dónde puedo revisar si mi contraseña fue expuesta?",
+        "Consejos para verificar filtraciones de contraseñas"
+      ],
+      "responses": [
+        "Puedes usar servicios como 'Have I Been Pwned' para verificar si tu contraseña ha sido expuesta en alguna filtración de datos conocida.",
+        "Visita sitios como 'Have I Been Pwned' e ingresa tu correo o contraseña para verificar si han sido comprometidos en alguna brecha de seguridad.",
+        "Usa herramientas en línea como 'Have I Been Pwned' para comprobar si tu contraseña ha sido parte de una filtración de datos."
+      ]
+    },
+    {
+      "tag": "autenticacion_multifactor",
+      "patterns": [
+        "¿Qué es la autenticación multifactor?",
+        "Autenticación multifactor",
+        "¿Cómo funciona la autenticación multifactor?",
+        "Definición de autenticación multifactor"
+      ],
+      "responses": [
+        "La autenticación multifactor es un método de seguridad que requiere más de una forma de verificación para acceder a una cuenta, como una contraseña y un código enviado a tu teléfono.",
+        "Es una capa adicional de seguridad que requiere dos o más formas de verificación, como algo que sabes (contraseña) y algo que tienes (código de autenticación).",
+        "La autenticación multifactor (MFA) añade una segunda capa de seguridad, como un código enviado a tu teléfono, para proteger tus cuentas."
+      ]
+    },
+    {
+      "tag": "keylogger",
+      "patterns": [
+        "¿Qué es un keylogger?",
+        "Keylogger",
+        "¿Cómo funciona un keylogger?",
+        "Definición de keylogger"
+      ],
+      "responses": [
+        "Un keylogger es un tipo de malware que registra las teclas que presionas, lo que puede permitir a un atacante capturar tus contraseñas. Para protegerte, usa software antivirus y evita descargar archivos sospechosos.",
+        "Es un programa malicioso que registra todo lo que escribes en el teclado, incluyendo contraseñas. Mantén tu sistema protegido con un buen antivirus.",
+        "Un keylogger captura todo lo que escribes, incluyendo contraseñas. Para evitarlo, no descargues archivos de fuentes no confiables y usa software de seguridad."
+      ]
+    },
+    {
+      "tag": "contrasena_unico_uso",
+      "patterns": [
+        "¿Qué es una contraseña de un solo uso?",
+        "Contraseña de un solo uso",
+        "¿Cómo funciona una contraseña de un solo uso?",
+        "Definición de contraseña de un solo uso"
+      ],
+      "responses": [
+        "Una contraseña de un solo uso (OTP) es una contraseña temporal que se utiliza para una sola sesión o transacción. Es común en la autenticación de dos factores.",
+        "Es una contraseña que solo se puede usar una vez, generalmente enviada a tu teléfono o correo. Es muy segura porque expira después de su uso.",
+        "Las contraseñas de un solo uso son temporales y se usan para autenticación adicional. Son ideales para transacciones sensibles."
+      ]
+    },
+    {
+      "tag": "encriptacion_contrasena",
+      "patterns": [
+        "¿Qué es la encriptación de contraseñas?",
+        "Encriptación de contraseñas",
+        "¿Cómo funciona la encriptación de contraseñas?",
+        "Definición de encriptación de contraseñas"
+      ],
+      "responses": [
+        "La encriptación de contraseñas es el proceso de convertir una contraseña en un formato ilegible para protegerla de accesos no autorizados. Solo se puede descifrar con una clave específica.",
+        "Es una técnica que convierte tu contraseña en un código ilegible. Solo se puede revertir con la clave correcta, lo que la hace muy segura.",
+        "La encriptación protege tus contraseñas convirtiéndolas en datos ilegibles. Sin la clave correcta, nadie puede acceder a ellas."
+      ]
+    },
+    {
+      "tag": "ataque_diccionario",
+      "patterns": [
+        "¿Qué es un ataque de diccionario?",
+        "Ataque de diccionario",
+        "¿Cómo funciona un ataque de diccionario?",
+        "Definición de ataque de diccionario"
+      ],
+      "responses": [
+        "Un ataque de diccionario es un método en el que un atacante intenta adivinar una contraseña probando palabras comunes o frases de un diccionario. Por eso es importante evitar usar palabras comunes en tus contraseñas.",
+        "Es un tipo de ataque donde el hacker prueba palabras comunes del diccionario para adivinar tu contraseña. Usa contraseñas complejas para evitarlo.",
+        "En un ataque de diccionario, el atacante prueba palabras comunes. Por eso es crucial usar contraseñas que no sean palabras reales."
+      ]
+    },
+    {
+      "tag": "gestor_contrasenas_offline",
+      "patterns": [
+        "¿Qué es un gestor de contraseñas offline?",
+        "Gestor de contraseñas offline",
+        "¿Cómo funciona un gestor de contraseñas offline?",
+        "Definición de gestor de contraseñas offline"
+      ],
+      "responses": [
+        "Un gestor de contraseñas offline almacena tus contraseñas en un dispositivo local en lugar de en la nube. Esto puede ser más seguro, pero requiere que hagas backups manuales.",
+        "Es un gestor de contraseñas que guarda tus claves en tu dispositivo, sin conexión a internet. Es más seguro, pero debes hacer copias de seguridad.",
+        "Un gestor offline guarda tus contraseñas en tu computadora o dispositivo. Es seguro, pero asegúrate de hacer backups para no perderlas."
+      ]
+    },
+    {
+      "tag": "contrasena_biometrica",
+      "patterns": [
+        "¿Qué es una contraseña biométrica?",
+        "Contraseña biométrica",
+        "¿Cómo funciona una contraseña biométrica?",
+        "Definición de contraseña biométrica"
+      ],
+      "responses": [
+        "Una contraseña biométrica utiliza características físicas únicas, como huellas dactilares o reconocimiento facial, para autenticar a un usuario. Es más segura que las contraseñas tradicionales.",
+        "Es un método de autenticación que usa rasgos físicos, como tu huella digital o rostro, para verificar tu identidad. Es muy seguro y difícil de falsificar.",
+        "Las contraseñas biométricas usan características únicas de tu cuerpo, como tu huella o tu cara, para proteger tus cuentas."
+      ]
+    },
+    {
+      "tag": "phishing_contrasena",
+      "patterns": [
+        "¿Qué es un ataque de phishing de contraseñas?",
+        "Phishing de contraseñas",
+        "¿Cómo funciona el phishing de contraseñas?",
+        "Definición de phishing de contraseñas"
+      ],
+      "responses": [
+        "Un ataque de phishing de contraseñas es cuando un atacante intenta engañarte para que reveles tu contraseña a través de un correo electrónico o sitio web falso. Siempre verifica la autenticidad de los sitios antes de ingresar tus credenciales.",
+        "Es un tipo de fraude donde los atacantes te engañan para que des tu contraseña en un sitio falso. Nunca ingreses tus datos en enlaces sospechosos.",
+        "El phishing de contraseñas es un intento de robar tus credenciales mediante sitios o correos falsos. Siempre verifica la URL antes de ingresar tus datos."
+      ]
+    },
+    {
+      "tag": "politica_contrasena",
+      "patterns": [
+        "¿Qué es una política de contraseñas?",
+        "Política de contraseñas",
+        "¿Cómo funciona una política de contraseñas?",
+        "Definición de política de contraseñas"
+      ],
+      "responses": [
+        "Una política de contraseñas es un conjunto de reglas que definen cómo deben ser las contraseñas en un sistema, como la longitud mínima, el uso de caracteres especiales y la frecuencia de cambio.",
+        "Es un conjunto de normas que establecen cómo deben ser las contraseñas, como su complejidad y cuándo deben cambiarse. Ayuda a mantener la seguridad.",
+        "Las políticas de contraseñas son reglas que aseguran que las contraseñas sean seguras, como requerir mayúsculas, números y símbolos."
+      ]
+    },
+    {
+      "tag": "contrasena_recuperacion",
+      "patterns": [
+        "¿Qué es una contraseña de recuperación?",
+        "Contraseña de recuperación",
+        "¿Cómo funciona una contraseña de recuperación?",
+        "Definición de contraseña de recuperación"
+      ],
+      "responses": [
+        "Una contraseña de recuperación es una contraseña alternativa que se utiliza para acceder a una cuenta si olvidas tu contraseña principal. Debe ser igual de segura que tu contraseña principal.",
+        "Es una contraseña que usas para recuperar el acceso a tu cuenta si olvidas la principal. Asegúrate de que sea fuerte y segura.",
+        "Las contraseñas de recuperación son claves alternativas que te permiten acceder a tu cuenta si pierdes la contraseña principal."
+      ]
+    },
+    {
+      "tag": "relleno_credenciales",
+      "patterns": [
+        "¿Qué es un ataque de relleno de credenciales?",
+        "Ataque de relleno de credenciales",
+        "¿Cómo funciona un ataque de relleno de credenciales?",
+        "Definición de ataque de relleno de credenciales"
+      ],
+      "responses": [
+        "Un ataque de relleno de credenciales es cuando un atacante usa contraseñas filtradas de una brecha de datos para intentar acceder a otras cuentas. Por eso es importante usar contraseñas únicas para cada cuenta.",
+        "Es un tipo de ataque donde los hackers usan contraseñas filtradas para intentar acceder a otras cuentas. Usa contraseñas únicas para evitarlo.",
+        "En un ataque de relleno de credenciales, los atacantes prueban contraseñas filtradas en otras cuentas. Por eso es crucial no reutilizar contraseñas."
+      ]
+    },
+    {
+      "tag": "contrasena_temporal",
+      "patterns": [
+        "¿Qué es una contraseña temporal?",
+        "Contraseña temporal",
+        "¿Cómo funciona una contraseña temporal?",
+        "Definición de contraseña temporal"
+      ],
+      "responses": [
+        "Una contraseña temporal es una contraseña que se genera para un uso limitado, como cuando se restablece una contraseña. Debe cambiarse inmediatamente después de su primer uso.",
+        "Es una contraseña que solo se usa una vez, generalmente para restablecer el acceso a una cuenta. Cambia la contraseña después de usarla.",
+        "Las contraseñas temporales son claves de un solo uso. Asegúrate de cambiarlas por una contraseña permanente después de usarlas."
+      ]
+    },
+    {
+      "tag": "token_seguridad",
+      "patterns": [
+        "¿Qué es un token de seguridad?",
+        "Token de seguridad",
+        "¿Cómo funciona un token de seguridad?",
+        "Definición de token de seguridad"
+      ],
+      "responses": [
+        "Un token de seguridad es un dispositivo físico o aplicación que genera códigos de un solo uso para la autenticación de dos factores. Aumenta la seguridad de tus cuentas.",
+        "Es una herramienta que genera códigos temporales para verificar tu identidad. Es muy útil para la autenticación de dos factores.",
+        "Los tokens de seguridad son dispositivos o apps que generan códigos únicos para proteger tus cuentas. Son ideales para la autenticación adicional."
+      ]
+    },
+    {
+      "tag": "contrasena_compartida",
+      "patterns": [
+        "¿Qué es una contraseña compartida?",
+        "Contraseña compartida",
+        "¿Cómo funciona una contraseña compartida?",
+        "Definición de contraseña compartida"
+      ],
+      "responses": [
+        "Una contraseña compartida es una contraseña que varias personas conocen y utilizan para acceder a un mismo recurso. Esto es menos seguro, ya que aumenta el riesgo de que la contraseña sea comprometida.",
+        "Es una contraseña que varias personas usan para acceder a una cuenta o recurso. Es menos segura porque no puedes controlar quién la conoce.",
+        "Las contraseñas compartidas son claves que varias personas usan. Evítalas siempre que sea posible, ya que aumentan el riesgo de seguridad."
+      ]
+    },
+     {
+          "tag": "seguridad_dispositivos_moviles",
+          "patterns": [
+            "¿Cómo proteger mi celular?",
+            "Consejos para seguridad en móviles",
+            "¿Cómo evitar virus en mi smartphone?",
+            "Seguridad en teléfonos inteligentes",
+            "Protección contra malware en móviles"
+          ],
+          "responses": [
+            "Para proteger tu celular, mantén el sistema operativo actualizado, usa autenticación biométrica y evita descargar apps de fuentes desconocidas.",
+            "Evita conectar tu smartphone a redes WiFi públicas sin protección y usa una VPN para mayor seguridad.",
+            "Instala solo aplicaciones de tiendas oficiales y revisa los permisos antes de conceder acceso a tus datos."
+          ]
+        },
+        {
+          "tag": "seguridad_dispositivos_corporativos",
+          "patterns": [
+            "¿Cómo proteger los dispositivos de mi empresa?",
+            "Seguridad para equipos corporativos",
+            "Consejos para dispositivos en la empresa",
+            "Protección contra amenazas en la empresa",
+            "Evitar ataques en dispositivos de trabajo"
+          ],
+          "responses": [
+            "Implementa políticas de seguridad estrictas y usa software de monitoreo en dispositivos empresariales.",
+            "Asegura que los empleados utilicen autenticación de dos factores y accedan solo a recursos esenciales.",
+            "Realiza auditorías de seguridad periódicas y protege la información con cifrado."
+          ]
+        },
+        {
+          "tag": "seguridad_identidad_digital",
+          "patterns": [
+            "¿Cómo proteger mi identidad en línea?",
+            "Evitar robo de identidad",
+            "Consejos para seguridad de identidad digital",
+            "Seguridad en perfiles en línea",
+            "Protección de identidad en internet"
+          ],
+          "responses": [
+            "No compartas información personal en redes sociales y usa contraseñas únicas para cada cuenta.",
+            "Configura alertas para detectar accesos sospechosos a tus cuentas y habilita la autenticación en dos pasos.",
+            "Utiliza un gestor de contraseñas para evitar reutilizar credenciales y reducir el riesgo de robo de identidad."
+          ]
+        },
+        {
+          "tag": "proteccion_ransomware",
+          "patterns": [
+            "¿Cómo protegerme del ransomware?",
+            "Evitar ataques de ransomware",
+            "Consejos para evitar ransomware",
+            "Protección contra secuestro de datos",
+            "Ransomware y cómo evitarlo"
+          ],
+          "responses": [
+            "Mantén copias de seguridad actualizadas en un almacenamiento externo o en la nube.",
+            "No abras archivos adjuntos ni enlaces sospechosos en correos electrónicos desconocidos.",
+            "Usa un software de seguridad con protección contra ransomware y manténlo actualizado."
+          ]
+        },
+        {
+              "tag": "seguridad_banca_online",
+              "patterns": [
+                "¿Cómo proteger mi cuenta bancaria en línea?",
+                "Seguridad en la banca online",
+                "¿Cómo evitar fraudes bancarios?",
+                "Protección para cuentas bancarias",
+                "Consejos para usar la banca en línea"
+              ],
+              "responses": [
+                "Usa contraseñas seguras y autenticación de dos factores para proteger tu cuenta bancaria en línea.",
+                "No ingreses a tu cuenta bancaria desde redes WiFi públicas y revisa regularmente tus transacciones.",
+                "Activa notificaciones de seguridad para estar al tanto de cualquier actividad sospechosa en tu cuenta."
+              ]
+            },
+            {
+              "tag": "seguridad_dispositivos_inteligentes",
+              "patterns": [
+                "¿Cómo proteger mi smart TV?",
+                "Seguridad en dispositivos inteligentes",
+                "¿Cómo asegurar mi asistente de voz?",
+                "Protección de dispositivos conectados",
+                "Evitar hackeos en dispositivos inteligentes"
+              ],
+              "responses": [
+                "Actualiza regularmente el firmware de tus dispositivos inteligentes y cambia las contraseñas predeterminadas.",
+                "Desactiva funciones innecesarias en tus dispositivos y usa una red WiFi separada para mayor seguridad.",
+                "Evita compartir datos sensibles con asistentes de voz y revisa las configuraciones de privacidad."
+              ]
+            },
+            {
+              "tag": "seguridad_en_redes_publicas",
+              "patterns": [
+                "¿Es seguro conectarse a WiFi público?",
+                "Riesgos de usar redes públicas",
+                "¿Cómo navegar seguro en redes públicas?",
+                "Protección al usar WiFi gratis",
+                "Evitar ataques en redes públicas"
+              ],
+              "responses": [
+                "Evita ingresar datos sensibles cuando uses una red WiFi pública y utiliza una VPN para mayor seguridad.",
+                "Desactiva la conexión automática a redes WiFi desconocidas y usa solo sitios con HTTPS.",
+                "Si necesitas conectarte a una red pública, evita hacer transacciones bancarias o ingresar contraseñas."
+              ]
+            },
+            {
+              "tag": "seguridad_troyanos",
+              "patterns": [
+                "¿Qué es un troyano?",
+                "Cómo funcionan los troyanos",
+                "¿Cómo evitar troyanos?",
+                "Protección contra malware troyano",
+                "¿Cómo eliminar un troyano?"
+              ],
+              "responses": [
+                "Un troyano es un tipo de malware que se disfraza de software legítimo para engañarte y obtener acceso a tu sistema.",
+                "Evita descargar archivos de fuentes no confiables y mantén tu antivirus actualizado para prevenir troyanos.",
+                "Si crees que tienes un troyano, ejecuta un escaneo de seguridad y elimina cualquier programa sospechoso."
+              ]
+            },
+            {
+              "tag": "seguridad_tarjetas_credito",
+              "patterns": [
+                "¿Cómo proteger mi tarjeta de crédito?",
+                "Evitar fraudes con tarjetas",
+                "Consejos de seguridad para tarjetas bancarias",
+                "¿Es seguro pagar con tarjeta en línea?",
+                "Protección contra clonación de tarjetas"
+              ],
+              "responses": [
+                "Nunca compartas los datos de tu tarjeta y usa solo sitios web seguros para hacer compras.",
+                "Activa notificaciones de transacciones y usa tarjetas virtuales para pagos en línea.",
+                "Si notas actividad sospechosa en tu tarjeta, contacta inmediatamente a tu banco."
+              ]
+            }
+          ]
+        }
+        
