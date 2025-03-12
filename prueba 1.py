@@ -68,84 +68,38 @@ REDIRECT_URI = "https://pruebas-duywq7mhwademlkp9vqdzm.streamlit.app"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
-# Generar estado único para prevenir CSRF
-def generate_state():
-    if 'oauth_state' not in st.session_state:
-        st.session_state.oauth_state = str(uuid4())
-    return st.session_state.oauth_state
-
-# Flujo de autenticación mejorado
+# Función para iniciar el flujo de autenticación
 def start_github_oauth():
-    state = generate_state()
     params = {
         "client_id": CLIENT_ID,
         "redirect_uri": REDIRECT_URI,
         "scope": "user",
-        "state": state
+        "state": "random_state_string"  # Puedes generar un valor aleatorio para mayor seguridad
     }
     auth_url = f"{AUTHORIZE_URL}?{urlencode(params)}"
     st.markdown(f"[Iniciar sesión con GitHub]({auth_url})")
 
-# Manejo de respuesta de OAuth mejorado
-def handle_oauth_response():
-    query_params = st.query_params
-    
-    if "code" in query_params and "state" in query_params:
-        saved_state = st.session_state.get("oauth_state")
-        returned_state = query_params["state"][0]
-        
-        # Verificar estado para prevenir CSRF
-        if saved_state != returned_state:
-            st.error("Error de seguridad: Estado no coincide")
-            return False
-        
-        code = query_params["code"][0]
-        token = get_access_token(code)
-        
-        if token:
-            user_info = get_user_info(token)
-            if user_info:
-                st.session_state.user_info = user_info
-                st.session_state.token = token
-                st.rerun()
-            else:
-                st.error("Error al obtener información del usuario")
-        else:
-            st.error("Error en la autenticación: Token no recibido")
-        return True
-    return False
-
-# Función para obtener token mejorada
+# Función para obtener el token de acceso
 def get_access_token(code):
-    try:
-        data = {
-            "client_id": CLIENT_ID,
-            "client_secret": CLIENT_SECRET,
-            "code": code,
-            "redirect_uri": REDIRECT_URI
-        }
-        headers = {"Accept": "application/json"}
-        response = requests.post(TOKEN_URL, data=data, headers=headers, timeout=10)
-        
-        if response.status_code == 200:
-            return response.json().get("access_token")
-        else:
-            st.error(f"Error del servidor: {response.status_code} - {response.text}")
-            return None
-            
-    except Exception as e:
-        st.error(f"Error de conexión: {str(e)}")
-        return None
+    data = {
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "code": code,
+        "redirect_uri": REDIRECT_URI
+    }
+    headers = {"Accept": "application/json"}
+    response = requests.post(TOKEN_URL, data=data, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("access_token")
+    return None
 
-# Función para obtener información del usuario (mantener igual)
+# Función para obtener la información del usuario
 def get_user_info(token):
-    try:
-        headers = {"Authorization": f"token {token}"}
-        response = requests.get("https://api.github.com/user", headers=headers, timeout=10)
-        return response.json() if response.status_code == 200 else None
-    except Exception as e:
-        st.error(f"Error al obtener información: {str(e)}")
-        return None
+    headers = {"Authorization": f"token {token}"}
+    response = requests.get("https://api.github.com/user", headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return None
 
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
@@ -549,7 +503,7 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-    # Verificación de autenticación mejorada
+        # Verificar autenticación primero
     if "user_info" not in st.session_state:
         st.title("🔐 Acceso Requerido")
         col1, col2, col3 = st.columns([1, 3, 1])
@@ -558,16 +512,30 @@ def main():
             <div style='text-align: center; padding: 2rem; border-radius: 15px; 
             background: rgba(18, 25, 38, 0.95); margin-top: 5rem;'>
                 <h2 style='color: #00a8ff;'>Bienvenido a WildPassPro</h2>
-                <p>Debes iniciar sesión con GitHub para continuar</p>
+                <p>Debes iniciar sesión o registrarte con GitHub para continuar</p>
             """, unsafe_allow_html=True)
             
+            # Botón de inicio de sesión centrado
             start_github_oauth()
             
-            if handle_oauth_response():
-                st.rerun()
-            
             st.markdown("</div>", unsafe_allow_html=True)
-            return
+            
+            # Manejar la respuesta de GitHub
+            query_params = st.query_params
+            if "code" in query_params:
+                code = query_params["code"][0]
+                token = get_access_token(code)
+                if token:
+                    user_info = get_user_info(token)
+                    if user_info:
+                        st.session_state.user_info = user_info
+                        st.session_state.token = token
+                        st.experimental_rerun()
+                else:
+                    st.error("Error en la autenticación. Intenta nuevamente.")
+            
+            return  # Detener la ejecución aquí si no está autenticado
+
     # Si está autenticado, mostrar el contenido principal
 
     st.title("🔐 WildPassPro - Suite de Seguridad")
