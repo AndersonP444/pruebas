@@ -3,6 +3,8 @@ import streamlit as st
 import requests
 from urllib.parse import urlencode
 from uuid import uuid4
+import time
+import random
 
 # Configuración de la página
 st.set_page_config(
@@ -42,15 +44,37 @@ st.markdown(
     h1, h2, h3 {
         text-shadow: 0 0 12px rgba(0,168,255,0.5);
     }
+    .training-panel {
+        background: rgba(18, 25, 38, 0.95);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        font-family: monospace;
+        white-space: pre;
+        color: #00a8ff;
+        border: 1px solid rgba(0, 168, 255, 0.3);
+    }
+    .loading-text {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #00a8ff;
+        margin-top: 1rem;
+        animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
 # Configuración de GitHub OAuth (ACTUALIZAR CON TUS CREDENCIALES REALES)
-CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
-CLIENT_SECRET = "1d0f05497fb5e04455ace743591a3ab18fab2801"
-REDIRECT_URI = "https://wildpasspro8080.streamlit.app"
+CLIENT_ID = "TU_CLIENT_ID_REAL"
+CLIENT_SECRET = "TU_CLIENT_SECRET_REAL"
+REDIRECT_URI = "TU_URL_DE_STREAMLIT"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
@@ -134,6 +158,55 @@ def get_user_info(token):
         st.error(f"Error al obtener información: {str(e)}")
         return None
 
+# Animación de entrenamiento de IA
+def create_training_panel(epoch, accuracy, feature_importances):
+    feature_bars = "\n".join([
+        f"Longitud   {'▮' * int(fi[0]*40)} {fi[0]*100:.1f}%",
+        f"Mayúsculas {'▮' * int(fi[1]*40)} {fi[1]*100:.1f}%",
+        f"Dígitos    {'▮' * int(fi[2]*40)} {fi[2]*100:.1f}%",
+        f"Símbolos   {'▮' * int(fi[3]*40)} {fi[3]*100:.1f}%",
+        f"Unicidad   {'▮' * int(fi[4]*40)} {fi[4]*100:.1f}%"
+    ])
+    
+    panel = f"""
+    ╭────────────────── WildPassPro - Entrenamiento de IA ──────────────────╮
+    │                                                                        │
+    │ Progreso del Entrenamiento:                                            │
+    │ Árboles creados: {epoch}/100                                           │
+    │ Precisión actual: {accuracy:.1%}                                      │
+    │                                                                        │
+    │ Características más importantes:                                       │
+    {feature_bars}
+    │                                                                        │
+    │ Creando protección inteligente...                                      │
+    ╰────────────────────────────────────────────────────────────────────────╯
+    """
+    return panel
+
+# Mostrar animación de entrenamiento
+def show_training_animation():
+    placeholder = st.empty()
+    for epoch in range(1, 101):
+        # Simular progreso
+        accuracy = min(epoch / 100 + random.uniform(-0.05, 0.05), 1.0)
+        feature_importances = [
+            (random.uniform(0.7, 0.9),  # Longitud
+             random.uniform(0.5, 0.7),  # Mayúsculas
+             random.uniform(0.6, 0.8),  # Dígitos
+             random.uniform(0.4, 0.6),  # Símbolos
+             random.uniform(0.3, 0.5))  # Unicidad
+        ]
+        
+        # Crear el panel de entrenamiento
+        panel = create_training_panel(epoch, accuracy, feature_importances)
+        
+        # Mostrar el panel en el placeholder
+        with placeholder:
+            st.markdown(f"```\n{panel}\n```", unsafe_allow_html=True)
+        
+        # Simular tiempo de entrenamiento
+        time.sleep(0.1)
+
 # Interfaz de la página de inicio de sesión
 def main():
     st.title("🔐 WildPassPro")
@@ -145,11 +218,11 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Botón de inicio de sesión centrado
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Iniciar sesión con GitHub", key="login_button"):
-            start_github_oauth()
+    # Mostrar animación de entrenamiento
+    if st.button("Iniciar sesión con GitHub", key="login_button"):
+        with st.spinner("Entrenando modelo de IA..."):
+            show_training_animation()
+        start_github_oauth()
 
     # Manejar la respuesta de OAuth
     if handle_oauth_response():
