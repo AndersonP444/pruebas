@@ -506,7 +506,7 @@ def main():
             if 'login' in user_info:
                 st.session_state.auth_state = True
                 st.session_state.user = user_info['login']
-                st.experimental_set_query_params()
+                 st.query_params.st.experimental_get_query_params()
             else:
                 st.error("Error en la autenticación. Intenta nuevamente.")
                 
