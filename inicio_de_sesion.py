@@ -160,17 +160,32 @@ def get_user_info(token):
 
 # Función para crear el panel de entrenamiento
 def create_training_panel(epoch, accuracy, feature_importances):
-    # Asegurarse de que feature_importances tenga la estructura correcta
+    """
+    Crea un panel de entrenamiento con el progreso y las características importantes.
+    
+    Args:
+        epoch (int): Número de épocas completadas.
+        accuracy (float): Precisión actual del modelo.
+        feature_importances (list): Lista de 5 elementos con la importancia de cada característica.
+    
+    Returns:
+        str: Panel de entrenamiento formateado.
+    """
+    # Validar feature_importances
     if not isinstance(feature_importances, (list, tuple)) or len(feature_importances) != 5:
         raise ValueError("feature_importances debe ser una lista o tupla de 5 elementos.")
     
+    # Validar que todos los elementos sean números
+    if not all(isinstance(fi, (int, float)) for fi in feature_importances):
+        raise ValueError("Todos los elementos de feature_importances deben ser números.")
+    
     # Crear las barras de características
     feature_bars = "\n".join([
-        f"Longitud   {'▮' * int(fi[0]*40)} {fi[0]*100:.1f}%",
-        f"Mayúsculas {'▮' * int(fi[1]*40)} {fi[1]*100:.1f}%",
-        f"Dígitos    {'▮' * int(fi[2]*40)} {fi[2]*100:.1f}%",
-        f"Símbolos   {'▮' * int(fi[3]*40)} {fi[3]*100:.1f}%",
-        f"Unicidad   {'▮' * int(fi[4]*40)} {fi[4]*100:.1f}%"
+        f"Longitud   {'▮' * int(fi * 40)} {fi * 100:.1f}%",
+        f"Mayúsculas {'▮' * int(fi * 40)} {fi * 100:.1f}%",
+        f"Dígitos    {'▮' * int(fi * 40)} {fi * 100:.1f}%",
+        f"Símbolos   {'▮' * int(fi * 40)} {fi * 100:.1f}%",
+        f"Unicidad   {'▮' * int(fi * 40)} {fi * 100:.1f}%"
     ])
     
     # Crear el panel
@@ -191,6 +206,9 @@ def create_training_panel(epoch, accuracy, feature_importances):
 
 # Función para mostrar la animación de entrenamiento
 def show_training_animation():
+    """
+    Muestra una animación simulando el entrenamiento de un modelo de IA.
+    """
     placeholder = st.empty()
     for epoch in range(1, 101):
         # Simular progreso
@@ -198,11 +216,11 @@ def show_training_animation():
         
         # Simular feature importances (asegurarse de que sea una lista de 5 elementos)
         feature_importances = [
-            (random.uniform(0.7, 0.9),  # Longitud
-             random.uniform(0.5, 0.7),  # Mayúsculas
-             random.uniform(0.6, 0.8),  # Dígitos
-             random.uniform(0.4, 0.6),  # Símbolos
-             random.uniform(0.3, 0.5))  # Unicidad
+            random.uniform(0.7, 0.9),  # Longitud
+            random.uniform(0.5, 0.7),  # Mayúsculas
+            random.uniform(0.6, 0.8),  # Dígitos
+            random.uniform(0.4, 0.6),  # Símbolos
+            random.uniform(0.3, 0.5)   # Unicidad
         ]
         
         # Crear el panel de entrenamiento
@@ -230,11 +248,6 @@ def main():
     if st.button("Iniciar sesión con GitHub", key="login_button"):
         with st.spinner("Entrenando modelo de IA..."):
             show_training_animation()
-        start_github_oauth()
-
-    # Manejar la respuesta de OAuth
-    if handle_oauth_response():
-        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
