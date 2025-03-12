@@ -24,6 +24,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from tensorflow.keras.optimizers import Adam
 import openai
 from urllib.parse import urlencode
+from oauthlib.oauth2 import WebApplicationClient
 
 # Configuración de la página para eliminar "Manage app" y "Share"
 st.set_page_config(
@@ -61,46 +62,36 @@ client = openai.OpenAI(
     api_key=GROQ_API_KEY
 )
 
+# ========== CONFIGURACIÓN AUTENTICACIÓN GITHUB ==========
 # Configuración de GitHub OAuth
 CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
 CLIENT_SECRET = "ed282057cd1a02d51e39d7a8b3064d7075e029fa"
-REDIRECT_URI = "https://pruebas-duywq7mhwademlkp9vqdzm.streamlit.app"
+REDIRECT_URI = "https://pruebas-444.streamlit.app/callback"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
-# Función para iniciar el flujo de autenticación
-def start_github_oauth():
-    params = {
-        "client_id": CLIENT_ID,
-        "redirect_uri": REDIRECT_URI,
-        "scope": "user",
-        "state": "random_state_string"  # Puedes generar un valor aleatorio para mayor seguridad
-    }
-    auth_url = f"{AUTHORIZE_URL}?{urlencode(params)}"
-    st.markdown(f"[Iniciar sesión con GitHub]({auth_url})")
+client = WebApplicationClient(CLIENT_ID)
 
-# Función para obtener el token de acceso
+def get_github_login_url():
+    base_url = "https://github.com/login/oauth/authorize"
+    return f"{base_url}?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=user:email"
+
 def get_access_token(code):
+    url = "https://github.com/login/oauth/access_token"
+    headers = {"Accept": "application/json"}
     data = {
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
         "code": code,
         "redirect_uri": REDIRECT_URI
     }
-    headers = {"Accept": "application/json"}
-    response = requests.post(TOKEN_URL, data=data, headers=headers)
-    if response.status_code == 200:
-        return response.json().get("access_token")
-    return None
+    response = requests.post(url, headers=headers, data=data)
+    return response.json().get("access_token")
 
-# Función para obtener la información del usuario
-def get_user_info(token):
-    headers = {"Authorization": f"token {token}"}
+def get_user_info(access_token):
+    headers = {"Authorization": f"token {access_token}"}
     response = requests.get("https://api.github.com/user", headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    return None
-
+    return response.json()
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
 
@@ -503,42 +494,51 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-        # Verificar autenticación primero
-    if "user_info" not in st.session_state:
-        st.title("🔐 Acceso Requerido")
-        col1, col2, col3 = st.columns([1, 3, 1])
-        with col2:
-            st.markdown("""
-            <div style='text-align: center; padding: 2rem; border-radius: 15px; 
-            background: rgba(18, 25, 38, 0.95); margin-top: 5rem;'>
-                <h2 style='color: #00a8ff;'>Bienvenido a WildPassPro</h2>
-                <p>Debes iniciar sesión o registrarte con GitHub para continuar</p>
-            """, unsafe_allow_html=True)
+    # Verificar autenticación primero
+    # Verificar autenticación
+    query_params = st.experimental_get_query_params()
+    if 'code' in query_params:
+        try:
+            code = query_params['code'][0]
+            access_token = get_access_token(code)
+            user_info = get_user_info(access_token)
             
-            # Botón de inicio de sesión centrado
-            start_github_oauth()
-            
-            st.markdown("</div>", unsafe_allow_html=True)
-            
-            # Manejar la respuesta de GitHub
-            query_params = st.query_params
-            if "code" in query_params:
-                code = query_params["code"][0]
-                token = get_access_token(code)
-                if token:
-                    user_info = get_user_info(token)
-                    if user_info:
-                        st.session_state.user_info = user_info
-                        st.session_state.token = token
-                        st.experimental_rerun()
-                else:
-                    st.error("Error en la autenticación. Intenta nuevamente.")
-            
-            return  # Detener la ejecución aquí si no está autenticado
+            if 'login' in user_info:
+                st.session_state.auth_state = True
+                st.session_state.user = user_info['login']
+                st.experimental_set_query_params()
+            else:
+                st.error("Error en la autenticación. Intenta nuevamente.")
+                
+        except Exception as e:
+            st.error(f"Error crítico: {str(e)}")
+
+    if 'auth_state' not in st.session_state or not st.session_state.auth_state:
+        st.title("Bienvenido a WildPassPro")
+        st.markdown("Debes iniciar sesión con GitHub para continuar")
+        login_url = get_github_login_url()
+        st.markdown(f"[Iniciar sesión con GitHub]({login_url})")
+        return
+
+    st.markdown(f"""
+    <style>
+        .stApp {{
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+                        url('https://raw.githubusercontent.com/AndersonP444/PROYECTO-IA-SIC-The-Wild-Project/main/secuencia-vector-diseno-codigo-binario_53876-164420.png');
+            background-size: cover;
+            background-attachment: fixed;
+            animation: fadeIn 1.5s ease-in;
+        }}
+        
+        .chat-message {{
+            animation: slideIn 0.4s ease-out;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
 
     # Si está autenticado, mostrar el contenido principal
 
-    st.title("🔐 WildPassPro - Suite de Seguridad")
+    st.title(f"🔐 WildPassPro - Suite de Seguridad - Bienvenido {st.session_state.user}")
     
     dataset_url = "https://github.com/AndersonP444/PROYECTO-IA-SIC-The-Wild-Project/raw/main/password_dataset_final.csv"
     df = pd.read_csv(dataset_url)
