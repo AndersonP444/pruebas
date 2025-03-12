@@ -158,8 +158,13 @@ def get_user_info(token):
         st.error(f"Error al obtener información: {str(e)}")
         return None
 
-# Animación de entrenamiento de IA
+# Función para crear el panel de entrenamiento
 def create_training_panel(epoch, accuracy, feature_importances):
+    # Asegurarse de que feature_importances tenga la estructura correcta
+    if not isinstance(feature_importances, (list, tuple)) or len(feature_importances) != 5:
+        raise ValueError("feature_importances debe ser una lista o tupla de 5 elementos.")
+    
+    # Crear las barras de características
     feature_bars = "\n".join([
         f"Longitud   {'▮' * int(fi[0]*40)} {fi[0]*100:.1f}%",
         f"Mayúsculas {'▮' * int(fi[1]*40)} {fi[1]*100:.1f}%",
@@ -168,6 +173,7 @@ def create_training_panel(epoch, accuracy, feature_importances):
         f"Unicidad   {'▮' * int(fi[4]*40)} {fi[4]*100:.1f}%"
     ])
     
+    # Crear el panel
     panel = f"""
     ╭────────────────── WildPassPro - Entrenamiento de IA ──────────────────╮
     │                                                                        │
@@ -183,12 +189,14 @@ def create_training_panel(epoch, accuracy, feature_importances):
     """
     return panel
 
-# Mostrar animación de entrenamiento
+# Función para mostrar la animación de entrenamiento
 def show_training_animation():
     placeholder = st.empty()
     for epoch in range(1, 101):
         # Simular progreso
         accuracy = min(epoch / 100 + random.uniform(-0.05, 0.05), 1.0)
+        
+        # Simular feature importances (asegurarse de que sea una lista de 5 elementos)
         feature_importances = [
             (random.uniform(0.7, 0.9),  # Longitud
              random.uniform(0.5, 0.7),  # Mayúsculas
