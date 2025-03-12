@@ -496,17 +496,19 @@ def main():
 
     # Verificar autenticación primero
     # Verificar autenticación
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params  # Reemplazar experimental_get_query_params
+    
     if 'code' in query_params:
         try:
-            code = query_params['code'][0]
+            code = query_params['code'][0]  # Acceder al primer elemento de la lista
             access_token = get_access_token(code)
             user_info = get_user_info(access_token)
             
             if 'login' in user_info:
                 st.session_state.auth_state = True
                 st.session_state.user = user_info['login']
-                st.experimental_set_query_params()
+                st.query_params.clear()  # Reemplazar experimental_set_query_params  # Limpiar parámetros después de autenticar
+                st.rerun()
             else:
                 st.error("Error en la autenticación. Intenta nuevamente.")
                 
