@@ -23,6 +23,8 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.feature_extraction.text import CountVectorizer
 from tensorflow.keras.optimizers import Adam
 import openai
+from urllib.parse import urlencode
+from oauthlib.oauth2 import WebApplicationClient
 
 # Configuración de la página para eliminar "Manage app" y "Share"
 st.set_page_config(
@@ -60,6 +62,36 @@ client = openai.OpenAI(
     api_key=GROQ_API_KEY
 )
 
+# ========== CONFIGURACIÓN AUTENTICACIÓN GITHUB ==========
+# Configuración de GitHub OAuth
+CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
+CLIENT_SECRET = "ed282057cd1a02d51e39d7a8b3064d7075e029fa"
+REDIRECT_URI = "https://pruebas-444.streamlit.app/callback"
+AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
+TOKEN_URL = "https://github.com/login/oauth/access_token"
+
+client = WebApplicationClient(CLIENT_ID)
+
+def get_github_login_url():
+    base_url = "https://github.com/login/oauth/authorize"
+    return f"{base_url}?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=user:email"
+
+def get_access_token(code):
+    url = "https://github.com/login/oauth/access_token"
+    headers = {"Accept": "application/json"}
+    data = {
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "code": code,
+        "redirect_uri": REDIRECT_URI
+    }
+    response = requests.post(url, headers=headers, data=data)
+    return response.json().get("access_token")
+
+def get_user_info(access_token):
+    headers = {"Authorization": f"token {access_token}"}
+    response = requests.get("https://api.github.com/user", headers=headers)
+    return response.json()
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
 
@@ -340,16 +372,16 @@ def escanear_vulnerabilidades(url):
 def explicar_vulnerabilidades(vulnerabilidades):
     explicaciones = {
         "XSS (Cross-Site Scripting)": [
-            "✅ *Qué es:* Ataque donde se inyectan scripts maliciosos en páginas web",
-            "🔒 *Solución:* Sanitizar entradas de usuario y usar Content Security Policy (CSP)"
+            "✅ **Qué es:** Ataque donde se inyectan scripts maliciosos en páginas web",
+            "🔒 **Solución:** Sanitizar entradas de usuario y usar Content Security Policy (CSP)"
         ],
         "SQL Injection": [
-            "✅ *Qué es:* Inyección de código SQL para manipular bases de datos",
-            "🔒 *Solución:* Usar consultas parametrizadas y ORMs"
+            "✅ **Qué es:** Inyección de código SQL para manipular bases de datos",
+            "🔒 **Solución:** Usar consultas parametrizadas y ORMs"
         ],
         "CSRF (Cross-Site Request Forgery)": [
-            "✅ *Qué es:* Ataque que engaña al usuario para ejecutar acciones no deseadas",
-            "🔒 *Solución:* Implementar tokens CSRF y validar origen de las peticiones"
+            "✅ **Qué es:** Ataque que engaña al usuario para ejecutar acciones no deseadas",
+            "🔒 **Solución:** Implementar tokens CSRF y validar origen de las peticiones"
         ]
     }
     resultado = "## Explicación de Vulnerabilidades\n\n"
@@ -380,36 +412,36 @@ def verificar_fuga_datos(password):
             for line in response.text.splitlines():
                 if line.startswith(suffix):
                     count = int(line.split(":")[1])
-                    return f"⚠️ *Advertencia:* Esta contraseña ha sido expuesta en {count} fugas de datos."
-            return "✅ *Segura:* Esta contraseña no ha sido expuesta en fugas de datos conocidas."
+                    return f"⚠️ **Advertencia:** Esta contraseña ha sido expuesta en {count} fugas de datos."
+            return "✅ **Segura:** Esta contraseña no ha sido expuesta en fugas de datos conocidas."
         else:
-            return "🔴 *Error:* No se pudo verificar la contraseña. Inténtalo de nuevo más tarde."
+            return "🔴 **Error:** No se pudo verificar la contraseña. Inténtalo de nuevo más tarde."
     except Exception as e:
-        return f"🔴 *Error:* {str(e)}"
+        return f"🔴 **Error:** {str(e)}"
 
 # ========== FUNCIÓN PARA ANALIZAR CONTRASEÑA CON GROQ ==========
 def analizar_contraseña_con_groq(password):
-    try:
-        mensaje = f"""
-        Analiza la siguiente contraseña y proporciona una explicación detallada de por qué es débil o fuerte:
-        Contraseña: {password}
+    # Crear el mensaje para Groq
+    mensaje = f"""
+    Analiza la siguiente contraseña y proporciona una explicación detallada de por qué es débil o fuerte:
+    Contraseña: {password}
 
-        Si es débil, enumera las vulnerabilidades críticas, compara con patrones comunes y proporciona recomendaciones personalizadas.
-        Si es fuerte, explica qué características la hacen segura y por qué es resistente a ataques.
-        """
+    Si es débil, enumera las vulnerabilidades críticas, compara con patrones comunes y proporciona recomendaciones personalizadas.
+    Si es fuerte, explica qué características la hacen segura y por qué es resistente a ataques.
+    """
 
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=[
-                {"role": "system", "content": "Eres un experto en seguridad de contraseñas."},
-                {"role": "user", "content": mensaje}
-            ]
-        )
+    # Enviar la solicitud a Groq
+    response = client.chat.completions.create(
+        model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": "Eres un experto en seguridad de contraseñas."},
+            {"role": "user", "content": mensaje}
+        ]
+    )
 
-        explicacion = response.choices[0].message.content
-        return explicacion
-    except Exception as e:
-        return f"Error al analizar la contraseña con Groq: {str(e)}"
+    # Obtener la respuesta de Groq
+    explicacion = response.choices[0].message.content
+    return explicacion
 
 # ========== INTERFAZ PRINCIPAL ==========
 def main():
@@ -462,7 +494,53 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-    st.title("🔐 WildPassPro - Suite de Seguridad")
+    # Verificar autenticación primero
+    # Verificar autenticación
+    query_params = st.query_params  # Reemplazar experimental_get_query_params
+    
+    if 'code' in query_params:
+        try:
+            code = query_params['code'][0]  # Acceder al primer elemento de la lista
+            access_token = get_access_token(code)
+            user_info = get_user_info(access_token)
+            
+            if 'login' in user_info:
+                st.session_state.auth_state = True
+                st.session_state.user = user_info['login']
+                st.query_params.clear()  # Reemplazar experimental_set_query_params  # Limpiar parámetros después de autenticar
+                st.rerun()
+            else:
+                st.error("Error en la autenticación. Intenta nuevamente.")
+                
+        except Exception as e:
+            st.error(f"Error crítico: {str(e)}")
+
+    if 'auth_state' not in st.session_state or not st.session_state.auth_state:
+        st.title("Bienvenido a WildPassPro")
+        st.markdown("Debes iniciar sesión con GitHub para continuar")
+        login_url = get_github_login_url()
+        st.markdown(f"[Iniciar sesión con GitHub]({login_url})")
+        return
+
+    st.markdown(f"""
+    <style>
+        .stApp {{
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
+                        url('https://raw.githubusercontent.com/AndersonP444/PROYECTO-IA-SIC-The-Wild-Project/main/secuencia-vector-diseno-codigo-binario_53876-164420.png');
+            background-size: cover;
+            background-attachment: fixed;
+            animation: fadeIn 1.5s ease-in;
+        }}
+        
+        .chat-message {{
+            animation: slideIn 0.4s ease-out;
+        }}
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Si está autenticado, mostrar el contenido principal
+
+    st.title(f"🔐 WildPassPro - Suite de Seguridad - Bienvenido {st.session_state.user}")
     
     dataset_url = "https://github.com/AndersonP444/PROYECTO-IA-SIC-The-Wild-Project/raw/main/password_dataset_final.csv"
     df = pd.read_csv(dataset_url)
@@ -487,7 +565,7 @@ def main():
             password_length = st.slider("Longitud de la contraseña", 12, 32, 16)
             if st.button("Generar Contraseña"):
                 secure_password = generar_contraseña_segura(password_length)
-                st.success(f"*Contraseña generada:* {secure_password}")
+                st.success(f"**Contraseña generada:** `{secure_password}`")
                 buffer = descargar_contraseñas_txt([secure_password])
                 st.download_button(
                     label="📥 Descargar Contraseña",
@@ -499,7 +577,7 @@ def main():
             st.markdown("### 🔑 Generar Llave de Acceso")
             if st.button("Generar Llave de Acceso"):
                 access_key = generar_llave_acceso()
-                st.success(f"*Llave de acceso generada:* {access_key}")
+                st.success(f"**Llave de acceso generada:** `{access_key}`")
                 buffer = descargar_contraseñas_txt([access_key])
                 st.download_button(
                     label="📥 Descargar Llave de Acceso",
@@ -525,9 +603,9 @@ def main():
             if contraseñas:
                 for idx, item in enumerate(contraseñas):
                     with st.container():
-                        st.write(f"*Sitio:* {item['sitio']}")
-                        st.write(f"*Usuario:* {item['usuario']}")
-                        st.write(f"*Contraseña:* {item['contraseña']}")
+                        st.write(f"**Sitio:** {item['sitio']}")
+                        st.write(f"**Usuario:** {item['usuario']}")
+                        st.write(f"**Contraseña:** `{item['contraseña']}`")
                         if st.button(f"Eliminar {item['sitio']}", key=f"del_{idx}"):
                             contraseñas.pop(idx)
                             with open("passwords.json", "w") as f:
@@ -587,7 +665,7 @@ def main():
             respuesta = respuesta_chatbot(prompt)
             if "||contraseña||" in respuesta:
                 nueva_contraseña = generar_contraseña_segura()
-                respuesta = respuesta.replace("||contraseña||", f"{nueva_contraseña}")
+                respuesta = respuesta.replace("||contraseña||", f"`{nueva_contraseña}`")
             st.session_state.historial_chat.append({"role": "user", "content": prompt})
             st.session_state.historial_chat.append({"role": "assistant", "content": respuesta})
             st.rerun()
