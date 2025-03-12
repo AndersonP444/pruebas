@@ -48,9 +48,9 @@ st.markdown(
 )
 
 # Configuración de GitHub OAuth (ACTUALIZAR CON TUS CREDENCIALES REALES)
-CLIENT_ID = "TU_CLIENT_ID_REAL"
-CLIENT_SECRET = "TU_CLIENT_SECRET_REAL"
-REDIRECT_URI = "TU_URL_DE_STREAMLIT"
+CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
+CLIENT_SECRET = "1d0f05497fb5e04455ace743591a3ab18fab2801"
+REDIRECT_URI = "https://wildpasspro9090.streamlit.app"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
