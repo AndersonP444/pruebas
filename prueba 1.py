@@ -496,7 +496,7 @@ def main():
 
     # Verificar autenticación primero
     # Verificar autenticación
-    query_params =  st.query_params.st.experimental_get_query_params()
+    query_params =  st.experimental_set_query_params()
     if 'code' in query_params:
         try:
             code = query_params['code'][0]
@@ -506,7 +506,7 @@ def main():
             if 'login' in user_info:
                 st.session_state.auth_state = True
                 st.session_state.user = user_info['login']
-                st.query_params.st.experimental_get_query_params()
+                st.experimental_set_query_params()
             else:
                 st.error("Error en la autenticación. Intenta nuevamente.")
                 
