@@ -521,7 +521,7 @@ def main():
             st.markdown("</div>", unsafe_allow_html=True)
             
             # Manejar la respuesta de GitHub
-            query_params = st.experimental_get_query_params()
+            query_params = st.query_params
             if "code" in query_params:
                 code = query_params["code"][0]
                 token = get_access_token(code)
