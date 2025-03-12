@@ -67,7 +67,7 @@ client = openai.OpenAI(
 CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
 CLIENT_SECRET = "ed282057cd1a02d51e39d7a8b3064d7075e029fa"
 REDIRECT_URI = "https://pruebas-444.streamlit.app/callback"
-AUTHORIZE_URL = f"https://github.com/login/oauth/authorize?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope=user"
+AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
 client = WebApplicationClient(CLIENT_ID)
@@ -89,40 +89,9 @@ def get_access_token(code):
     return response.json().get("access_token")
 
 def get_user_info(access_token):
-    url = "https://api.github.com/user"
     headers = {"Authorization": f"token {access_token}"}
-    response = requests.get(url, headers=headers)
+    response = requests.get("https://api.github.com/user", headers=headers)
     return response.json()
-st.title("Inicio de sesión con GitHub")
-
-if "access_token" not in st.session_state:
-    st.session_state.access_token = None
-
-if st.session_state.access_token:
-    user_data = get_user_info(st.session_state.access_token)
-    st.write(f"¡Bienvenido, {user_data['login']}!")
-    st.image(user_data["avatar_url"], width=100)
-    st.write(f"Nombre: {user_data.get('name', 'No disponible')}")
-    st.write(f"Bio: {user_data.get('bio', 'No disponible')}")
-    if st.button("Cerrar sesión"):
-        st.session_state.access_token = None
-        st.rerun()
-else:
-    st.write("Por favor, inicia sesión con GitHub:")
-    if st.button("Iniciar sesión con GitHub"):
-        st.write(f"[Haz clic aquí para autenticarte]({AUTHORIZE_URL})")
-
-    # Obtener los parámetros de la URL
-    query_params = st.query_params
-    if 'code' in query_params:
-        code = query_params['code']
-        access_token = get_access_token(code)
-        if access_token:
-            st.session_state.access_token = access_token
-            st.rerun()
-        else:
-            st.error("Error al obtener el token de acceso. Inténtalo de nuevo.")
-
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
 
@@ -527,20 +496,17 @@ def main():
 
     # Verificar autenticación primero
     # Verificar autenticación
-    # Manejar redirección de GitHub (CAMBIO 1)
-    query_params = st.query_params  # Reemplazar experimental_get_query_params
-    
+    query_params = st.experimental_get_query_params()
     if 'code' in query_params:
         try:
-            code = query_params['code'][0]  # Acceder al primer elemento de la lista
+            code = query_params['code'][0]
             access_token = get_access_token(code)
             user_info = get_user_info(access_token)
             
             if 'login' in user_info:
                 st.session_state.auth_state = True
                 st.session_state.user = user_info['login']
-                st.query_params.clear()  # Reemplazar experimental_set_query_params
-                st.rerun()
+                st.experimental_set_query_params()
             else:
                 st.error("Error en la autenticación. Intenta nuevamente.")
                 
