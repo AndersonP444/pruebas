@@ -4,7 +4,6 @@ import requests
 from urllib.parse import urlencode
 from uuid import uuid4
 import time
-import random
 
 # Configuración de la página
 st.set_page_config(
@@ -44,15 +43,37 @@ st.markdown(
     h1, h2, h3 {
         text-shadow: 0 0 12px rgba(0,168,255,0.5);
     }
-    .training-panel {
-        background: rgba(18, 25, 38, 0.95);
-        border-radius: 15px;
-        padding: 1.5rem;
+    .neural-network {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
         margin: 2rem 0;
-        font-family: monospace;
-        white-space: pre;
-        color: #00a8ff;
-        border: 1px solid rgba(0, 168, 255, 0.3);
+    }
+    .neuron {
+        width: 20px;
+        height: 20px;
+        background-color: #00a8ff;
+        border-radius: 50%;
+        margin: 0 10px;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.2); opacity: 0.7; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .connection {
+        width: 50px;
+        height: 2px;
+        background-color: #00a8ff;
+        margin: 0 5px;
+        animation: flow 2s infinite;
+    }
+    @keyframes flow {
+        0% { transform: scaleX(1); }
+        50% { transform: scaleX(1.2); }
+        100% { transform: scaleX(1); }
     }
     .loading-text {
         text-align: center;
@@ -72,9 +93,9 @@ st.markdown(
 )
 
 # Configuración de GitHub OAuth (ACTUALIZAR CON TUS CREDENCIALES REALES)
-CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
-CLIENT_SECRET = "1d0f05497fb5e04455ace743591a3ab18fab2801"
-REDIRECT_URI = "https://wildpasspro8080.streamlit.app"
+CLIENT_ID = "TU_CLIENT_ID_REAL"
+CLIENT_SECRET = "TU_CLIENT_SECRET_REAL"
+REDIRECT_URI = "TU_URL_DE_STREAMLIT"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
@@ -158,80 +179,21 @@ def get_user_info(token):
         st.error(f"Error al obtener información: {str(e)}")
         return None
 
-# Función para crear el panel de entrenamiento
-def create_training_panel(epoch, accuracy, feature_importances):
-    """
-    Crea un panel de entrenamiento con el progreso y las características importantes.
-    
-    Args:
-        epoch (int): Número de épocas completadas.
-        accuracy (float): Precisión actual del modelo.
-        feature_importances (list): Lista de 5 elementos con la importancia de cada característica.
-    
-    Returns:
-        str: Panel de entrenamiento formateado.
-    """
-    # Validar feature_importances
-    if not isinstance(feature_importances, (list, tuple)) or len(feature_importances) != 5:
-        raise ValueError("feature_importances debe ser una lista o tupla de 5 elementos.")
-    
-    # Validar que todos los elementos sean números
-    if not all(isinstance(fi, (int, float)) for fi in feature_importances):
-        raise ValueError("Todos los elementos de feature_importances deben ser números.")
-    
-    # Crear las barras de características
-    feature_bars = "\n".join([
-        f"Longitud   {'▮' * int(fi * 40)} {fi * 100:.1f}%",
-        f"Mayúsculas {'▮' * int(fi * 40)} {fi * 100:.1f}%",
-        f"Dígitos    {'▮' * int(fi * 40)} {fi * 100:.1f}%",
-        f"Símbolos   {'▮' * int(fi * 40)} {fi * 100:.1f}%",
-        f"Unicidad   {'▮' * int(fi * 40)} {fi * 100:.1f}%"
-    ])
-    
-    # Crear el panel
-    panel = f"""
-    ╭────────────────── WildPassPro - Entrenamiento de IA ──────────────────╮
-    │                                                                        │
-    │ Progreso del Entrenamiento:                                            │
-    │ Árboles creados: {epoch}/100                                           │
-    │ Precisión actual: {accuracy:.1%}                                      │
-    │                                                                        │
-    │ Características más importantes:                                       │
-    {feature_bars}
-    │                                                                        │
-    │ Creando protección inteligente...                                      │
-    ╰────────────────────────────────────────────────────────────────────────╯
-    """
-    return panel
-
-# Función para mostrar la animación de entrenamiento
-def show_training_animation():
-    """
-    Muestra una animación simulando el entrenamiento de un modelo de IA.
-    """
-    placeholder = st.empty()
-    for epoch in range(1, 101):
-        # Simular progreso
-        accuracy = min(epoch / 100 + random.uniform(-0.05, 0.05), 1.0)
-        
-        # Simular feature importances (asegurarse de que sea una lista de 5 elementos)
-        feature_importances = [
-            random.uniform(0.7, 0.9),  # Longitud
-            random.uniform(0.5, 0.7),  # Mayúsculas
-            random.uniform(0.6, 0.8),  # Dígitos
-            random.uniform(0.4, 0.6),  # Símbolos
-            random.uniform(0.3, 0.5)   # Unicidad
-        ]
-        
-        # Crear el panel de entrenamiento
-        panel = create_training_panel(epoch, accuracy, feature_importances)
-        
-        # Mostrar el panel en el placeholder
-        with placeholder:
-            st.markdown(f"```\n{panel}\n```", unsafe_allow_html=True)
-        
-        # Simular tiempo de entrenamiento
-        time.sleep(0.1)
+# Animación de red neuronal
+def show_neural_network_animation():
+    st.markdown(
+        """
+        <div class="neural-network">
+            <div class="neuron"></div>
+            <div class="connection"></div>
+            <div class="neuron"></div>
+            <div class="connection"></div>
+            <div class="neuron"></div>
+        </div>
+        <div class="loading-text">Entrenando red neuronal...</div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # Interfaz de la página de inicio de sesión
 def main():
@@ -244,10 +206,18 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Mostrar animación de entrenamiento
-    if st.button("Iniciar sesión con GitHub", key="login_button"):
-        with st.spinner("Entrenando modelo de IA..."):
-            show_training_animation()
+    # Mostrar animación de red neuronal
+    show_neural_network_animation()
+
+    # Botón de inicio de sesión centrado
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("Iniciar sesión con GitHub", key="login_button"):
+            start_github_oauth()
+
+    # Manejar la respuesta de OAuth
+    if handle_oauth_response():
+        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
