@@ -503,6 +503,41 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
+        # Verificar autenticación primero
+    if "user_info" not in st.session_state:
+        st.title("🔐 Acceso Requerido")
+        col1, col2, col3 = st.columns([1, 3, 1])
+        with col2:
+            st.markdown("""
+            <div style='text-align: center; padding: 2rem; border-radius: 15px; 
+            background: rgba(18, 25, 38, 0.95); margin-top: 5rem;'>
+                <h2 style='color: #00a8ff;'>Bienvenido a WildPassPro</h2>
+                <p>Debes iniciar sesión o registrarte con GitHub para continuar</p>
+            """, unsafe_allow_html=True)
+            
+            # Botón de inicio de sesión centrado
+            start_github_oauth()
+            
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            # Manejar la respuesta de GitHub
+            query_params = st.experimental_get_query_params()
+            if "code" in query_params:
+                code = query_params["code"][0]
+                token = get_access_token(code)
+                if token:
+                    user_info = get_user_info(token)
+                    if user_info:
+                        st.session_state.user_info = user_info
+                        st.session_state.token = token
+                        st.experimental_rerun()
+                else:
+                    st.error("Error en la autenticación. Intenta nuevamente.")
+            
+            return  # Detener la ejecución aquí si no está autenticado
+
+    # Si está autenticado, mostrar el contenido principal
+
     st.title("🔐 WildPassPro - Suite de Seguridad")
     
     dataset_url = "https://github.com/AndersonP444/PROYECTO-IA-SIC-The-Wild-Project/raw/main/password_dataset_final.csv"
