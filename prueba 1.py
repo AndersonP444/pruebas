@@ -65,7 +65,7 @@ client = openai.OpenAI(
 # Configuración de GitHub OAuth (ACTUALIZAR CON TUS CREDENCIALES REALES)
 CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
 CLIENT_SECRET = "1d0f05497fb5e04455ace743591a3ab18fab2801"
-REDIRECT_URI = "https://wildpasspro10.streamlit.app"
+REDIRECT_URI = "https://wildpasspro9090.streamlit.app"
 AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 TOKEN_URL = "https://github.com/login/oauth/access_token"
 
