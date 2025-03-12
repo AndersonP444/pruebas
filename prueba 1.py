@@ -496,7 +496,7 @@ def main():
 
     # Verificar autenticación primero
     # Verificar autenticación
-    query_params = st.experimental_get_query_params()
+    query_params =  st.query_params.st.experimental_get_query_params()
     if 'code' in query_params:
         try:
             code = query_params['code'][0]
