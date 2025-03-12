@@ -23,6 +23,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.feature_extraction.text import CountVectorizer
 from tensorflow.keras.optimizers import Adam
 import openai
+from urllib.parse import urlencode
 
 # Configuración de la página para eliminar "Manage app" y "Share"
 st.set_page_config(
@@ -59,6 +60,46 @@ client = openai.OpenAI(
     base_url="https://api.groq.com/openai/v1",
     api_key=GROQ_API_KEY
 )
+
+# Configuración de GitHub OAuth
+CLIENT_ID = "Ov23liuP3aNdQcqR96Vi"
+CLIENT_SECRET = "ed282057cd1a02d51e39d7a8b3064d7075e029fa"
+REDIRECT_URI = "https://pruebas-duywq7mhwademlkp9vqdzm.streamlit.app"
+AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
+TOKEN_URL = "https://github.com/login/oauth/access_token"
+
+# Función para iniciar el flujo de autenticación
+def start_github_oauth():
+    params = {
+        "client_id": CLIENT_ID,
+        "redirect_uri": REDIRECT_URI,
+        "scope": "user",
+        "state": "random_state_string"  # Puedes generar un valor aleatorio para mayor seguridad
+    }
+    auth_url = f"{AUTHORIZE_URL}?{urlencode(params)}"
+    st.markdown(f"[Iniciar sesión con GitHub]({auth_url})")
+
+# Función para obtener el token de acceso
+def get_access_token(code):
+    data = {
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "code": code,
+        "redirect_uri": REDIRECT_URI
+    }
+    headers = {"Accept": "application/json"}
+    response = requests.post(TOKEN_URL, data=data, headers=headers)
+    if response.status_code == 200:
+        return response.json().get("access_token")
+    return None
+
+# Función para obtener la información del usuario
+def get_user_info(token):
+    headers = {"Authorization": f"token {token}"}
+    response = requests.get("https://api.github.com/user", headers=headers)
+    if response.status_code == 200:
+        return response.json()
+    return None
 
 # ========== CONFIGURACIONES INICIALES ==========
 nltk.download('punkt')
